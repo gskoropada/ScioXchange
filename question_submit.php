@@ -1,6 +1,8 @@
 <?php
+$styles = ["main.css", "header.css"];
 $title = "Scio Exchange - Save Question";
 include "html_start.php";
+include "header.php";
 
 if(!isset($_POST['submit']))  {//security validation
 		echo 'unauthorised access';	
@@ -23,26 +25,12 @@ if(!isset($_POST['submit']))  {//security validation
 		
 		require "connect.php";
 
-/*
-//object to catch error messages
-$message = '';
-//database connection
-$db = new mysqli('localhost', 'root', '', 'php_assignment');
-//assign error messages to the $message object
-if ($db->connect_error) {
-	$message = $db->connect_error;
-} else{ //if nothing is wrong then get the question from the url id, sanitizing the data first
-	$sql = "INSERT INTO question (author, question_title, content, tags) values ('$author', '$question_title', '$content', '$tags')";
-mysqli_query($db, $sql)
-	or die('Cannot update database.');*/
-
 		$sql = "INSERT INTO question (author, question_title, content, tags) values ('$author', '$question_title', '$content', '$tags')";
 		
 		$result = mysqli_query($con, $sql);
 
 		if($result) {
 
-			include "header.php" 
 ?>
 	<div id="breadcrumbs">
 		<p><a href="index.php">Home</a> > <a href="questions.php">Questions</a> > <?php echo $question_title ?> submitted!</p>

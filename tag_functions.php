@@ -136,4 +136,19 @@ function fetchTags($tag_input) {
 		}
 	}
 }
+
+function getTagCount($tag) {
+	global $con;
+	
+	$sql = "SELECT tag_count FROM tag WHERE tag = '$tag' ";
+	
+	$result = mysqli_query($con,$sql);
+	
+	if (!$result) {
+		return false;
+	} else {
+		$count = mysqli_fetch_array($result);
+		return $count[0]; 
+	}
+}
 ?>
