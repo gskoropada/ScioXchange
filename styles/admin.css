@@ -1,0 +1,19 @@
+@CHARSET "ISO-8859-1";
+#admin_sidebar {
+	width: 15%;
+	float: left;
+}
+
+#admin_pane {
+	width: 85%;
+	float: left;
+	background-color: #ddd;
+}
+
+th {
+	background-color: #eee;
+}
+
+th > #sort {
+	color: red;
+}

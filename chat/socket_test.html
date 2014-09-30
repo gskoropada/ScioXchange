@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script>
+	function connect() {
+		var socket = new WebSocket("ws://127.0.0.1:2500");
+		
+		socket.onopen = function(ev) {
+			alert("Connected");
+			socket.send("Testing");
+		}
+	}
+	
+</script>
+</head>
+<body>
+<div id="sse">
+   <a href="javascript:connect()">connect</a>
+</div>
+</body>
+</html>

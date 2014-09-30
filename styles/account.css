@@ -1,0 +1,12 @@
+@CHARSET "ISO-8859-1";
+.profile_pic {
+	width: 250px;
+	height: 250px;
+	float: right;
+	clear: left;
+}
+
+#profile_pic {
+	float: right;
+	width: 250px;
+}
