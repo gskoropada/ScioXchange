@@ -41,13 +41,19 @@ require("html_end.php");
 function getAnswers() {
 	global $con;
 	
-	$sql = 'SELECT answer_id, author, content, positive_votes, negative_votes, screenName, timestamp FROM answer INNER JOIN user on author = UserID WHERE question ='.$_GET['id']." ORDER BY timestamp";
+	$sql = 'SELECT answer_id, author, content, (positive_votes-negative_votes) as rating, screenName, timestamp FROM answer INNER JOIN user on author = UserID WHERE question ='.$_GET['id']." ORDER BY rating DESC";
 	$result = mysqli_query($con, $sql);
 	
 	while($answers = mysqli_fetch_assoc($result)) {
 		echo "<div class='answer' id='ans_".$answers['answer_id']."'><span class='ans_content'>".nl2br($answers['content'])."</span><span class='aauthor'><a href=\"user_profile.php?id="
 		.$answers['author']."\">".$answers['screenName']."</a></span>";
-		echo "<span id='rating_".$answers['answer_id']."' class='rating'>".($answers['positive_votes']-$answers['negative_votes'])."</span>";
+		echo "<span id='rating_".$answers['answer_id']."' class='rating ";
+		if($answers['rating']>0) {
+			echo "r_pos";
+		} else if ($answers['rating']<0){
+			echo "r_neg";
+		}
+		echo "'>".$answers['rating']."</span>";
 		echo "<div class='astats'>".date_format(new DateTime($answers['timestamp']), "d-M-y");
 		if(isset($_SESSION['userid'])) {
 			echo " | <span id='".$answers['answer_id']."' class='click_option btnAComment'>Leave a comment</span>";

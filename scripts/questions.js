@@ -57,11 +57,39 @@ $(function() {
 	});
 	
 	$(".thumb_up").click(function() {
-		console.info($(this).attr('id') + " Voted up");
+		var id=$(this).attr('id');
+		console.info(id);
+		$.ajax({
+			type: "POST",
+			url: "vote.php",
+			data: {
+				dir: 1,
+				answer: id
+			},
+			success: function (data) {
+				console.info(data);
+				location.reload();
+			}
+			
+		});
 	});
 	
 	$(".thumb_down").click(function() {
-		console.info($(this).attr('id') + " Voted down");
+		var id=$(this).attr('id');
+		console.info(id);
+		$.ajax({
+			type: "POST",
+			url: "vote.php",
+			data: {
+				dir: 0,
+				answer: id
+			},
+			success: function (data) {
+				console.info(data);
+				location.reload();
+			}
+			
+		});
 	});
 	
 });
