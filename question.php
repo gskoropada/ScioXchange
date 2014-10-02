@@ -12,6 +12,7 @@ $scripts = ["jquery-1.11.1.js","reply.js","questions.js"];
 
 include "html_start.php";
 include "header.php"; 
+require "vote.php";
 
 $d = new DateTime($question['timestamp']);
 echo "<div id='wrapper'>";
@@ -57,8 +58,12 @@ function getAnswers() {
 		echo "<div class='astats'>".date_format(new DateTime($answers['timestamp']), "d-M-y");
 		if(isset($_SESSION['userid'])) {
 			echo " | <span id='".$answers['answer_id']."' class='click_option btnAComment'>Leave a comment</span>";
-			echo " | <span id='".$answers['answer_id']."' class='click_option thumb_up'>Thumbs Up</span>";
-			echo " | <span id='".$answers['answer_id']."' class='click_option thumb_down'>Thumbs down</span>";
+			if(checkVote($answers['answer_id'])) {
+				echo " | <span id='".$answers['answer_id']."' class='click_option thumb_up'>Thumbs Up</span>";
+				echo " | <span id='".$answers['answer_id']."' class='click_option thumb_down'>Thumbs down</span>";
+			} else {
+				echo " | Already voted.";
+			}
 		}
 		echo "</div>";
 		getComments(1, $answers['answer_id']);
