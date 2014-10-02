@@ -4,6 +4,13 @@ body {
 	font-family: sans-serif;
 }
 
+#wrapper {
+	position: relative;
+	float: left;
+	clear: right;
+	width: 100%;
+}
+
 .click_option:hover {
 	cursor: pointer;
 }

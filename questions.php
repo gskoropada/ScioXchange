@@ -1,66 +1,73 @@
 <?php
-/*$hostname = 'localhost';
-$username = 'root';
-$password = '';
-$dbname = 'php_assignment';
-//object to catch error messages
-$message = '';
-//database connection
-$db = new mysqli($hostname, $username, $password, $dbname);
-//assign error messages to the $message object
-if ($db->connect_error) {
-	$message = $db->connect_error;
-	} else{	
-//if nothing is wrong then send the query
-	$sql = 'SELECT question_id, question_title, tags, screen_name, user_id, author, COUNT(comment_id) AS no_replies FROM (question LEFT JOIN user ON user_id=author) LEFT JOIN comment ON link=question_id GROUP BY question_id ORDER BY question_id DESC';
-	$result = $db->query($sql);
-	if ($db->error){ //if something is wrong with the query then show the error
-		$message = $db->error;
-	}
-}*/
-
-$message = '';
 
 require "connect.php";
 
 $title = "Scio Exchange - Questions";
-$styles = ["main.css","header.css"];
-$scripts = ["jquery-1.11.1.js"];
+$styles = ["main.css","header.css","questions.css"];
+$scripts = ["jquery-1.11.1.js", "questions.js"];
 
 require "html_start.php";
 require "header.php";
 
-$sql = 'SELECT question_id, question_title, tags, screenName, UserID, author, COUNT(comment_id) AS no_replies FROM (question LEFT JOIN user ON UserID=author) LEFT JOIN comment ON link=question_id GROUP BY question_id ORDER BY question_id DESC';
-
+//echo "<div id='breadcrumbs'>
+//	<p><a href='index.php'>Home</a> > Questions</p>
+//</div>";
 ?>
-<div id="breadcrumbs">
-	<p><a href="index.php">Home</a> > Questions</p>
-</div>
-<?php if ($message) { //if there is an error message stored in $message then show it.
-		echo "<h2>$message</h2>";
-	} else {
-	?>
-	<h2>Questions!</h2>
-<p><a href ="ask.php">Ask your own</a></p>
-		<?php 
-		$result = mysqli_query($con, $sql);
-		if($result) {
-			while ($row = mysqli_fetch_array($result)) //loop through a list of all the questions.
-			{ ?>
-		<ul>
-			<li><a href="question.php?id=<?php echo $row['question_id']; ?>"><?php echo $row['question_title']; ?></a>
-			</br>Author: <a href="user_profile.php?id=<?php echo $row['UserID']; ?>"><?php echo $row['screenName']; ?></a>
-			</br>Replies: <?php echo $row['no_replies']; ?>
-			</br>Tags: 
-				<?php //display all the tags as individual elements.
-				$tags = explode(', ' , $row['tags']);
-				foreach($tags as $tag) {
-					echo "<a href='#'>$tag</a> ";
-				}?></li>
-		</ul>
-	<?php }
-	} //end of loop
-}
+<div id="wrapper">
+<h2>Questions!</h2>
+<span id="btnAsk" class="click_option">Ask your own</span>
 
+<?php 
+listQuestions();
+
+echo "</div>";
 require "html_end.php";
+
+function listQuestions() {
+	global $con;
+	
+	$query = 
+	"SELECT question.author as auth, question_id, question_title, question.content as q, tags, replies, screenName, timestamp FROM question 
+	LEFT JOIN 
+		(SELECT count(answer_id) as replies, question from answer group by question) as reply
+	on question_id = question
+	INNER JOIN user on question.author = UserID
+	ORDER BY timestamp DESC";
+	
+	$result = mysqli_query($con, $query);
+	
+	if(!$result) {
+		echo "DB Error";
+	} else {
+		while($question = mysqli_fetch_array($result)) {
+			if(empty($question['replies'])) {
+				$r = "no replies";
+			} else {
+				if($question['replies'] == 1) {
+					$r = "1 reply";
+				} else {
+					$r = $question['replies']." replies";
+				}
+			}
+			if(strlen($question['q']) > 255) {
+				$q = substr($question['q'],0,255)."...";
+			} else {
+				$q = $question['q'];
+			}
+			$d = new DateTime($question['timestamp']);
+			echo "<div id=\"".$question['question_id']."\" class='question qredirect click_option'><p class='qtitle'>".$question['question_title']."</p>";
+			echo "<span class='qauthor'><a href=\"user_profile.php?id=".$question['auth']."\">".$question['screenName']."</a></span>";
+			echo "<span class='qexcerpt'>$q</span>";
+			echo "<span class='qstats'>".date_format($d, "d-M-Y")." | $r";
+			echo "<span class='tags'>";
+			$tags = explode(', ' , $question['tags']);
+			
+			foreach($tags as $tag) {
+				echo "<a href='#'>$tag</a> ";
+			}
+			
+			echo "</span></span></div>\n";
+		}
+	}
+}
 ?>

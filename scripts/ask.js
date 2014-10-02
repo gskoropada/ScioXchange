@@ -29,6 +29,7 @@ $(function() {
 					location.replace("questions.php");
 				} else {
 					$("#msgArea").text("There has been an error. Try again");
+					console.info(data);
 				}
 			}
 		});

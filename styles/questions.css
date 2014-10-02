@@ -1,0 +1,175 @@
+@CHARSET "ISO-8859-1";
+
+#btnAsk {
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	background-color: rgba(0,150,130,0.8);
+	padding: 7px;
+	border-radius: 3px;
+}
+
+#btnAsk:hover {
+	box-shadow: 3px 3px #ddd;
+}
+
+#btnQComment {
+	margin: 0px;
+}
+
+.question {
+	position: relative;
+	width: 95%;
+	background-color: #ddd;
+	margin: auto;
+	margin-bottom: 5px;
+	padding: 5px;
+	border-radius: 3px;
+}
+
+.answer {
+	position: relative;
+	width: 90%;
+	background-color: #eee;
+	margin: auto;
+	margin-bottom: 5px;
+	padding: 5px;
+	border-radius: 3px;	
+}
+
+.comment {
+	width: 96%;
+	margin-left: 2%;
+	background-color: #f9f9f9;
+	padding: 5px;
+	border-bottom: dotted 1px #aaa;
+	position: relative;
+}
+
+.comment_timestamp {
+	font-size: 0.8em;
+	color: #888;
+	position: absolute;
+	bottom: 2px;
+	right: 3px;
+}
+
+.reply {
+	position: relative;
+	width: 90%;
+	background-color: #eee;
+	margin: auto;
+	margin-bottom: 5px;
+	padding: 5px;
+	border-radius: 3px;	
+}
+
+.reply_title {
+	display: block;
+	font-size: 0.9em;
+	color: #aaa;
+	border-bottom: dotted 1px #aaa;
+}
+
+#inAnswer {
+	background-color: rgba(200,200,200,0.6);
+	width: 100%;
+	border: none;
+	min-height: 5em;
+}
+
+.qtitle {
+	font-size: 1.3em;
+	font-variant: small-caps;
+	padding: 0px;
+	margin: 0px;
+	margin-bottom: 4px;
+	color: #333;
+}
+
+.qauthor {
+	position: absolute;
+	top: 5px;
+	right: 3px;
+	font-size: 0.9em;
+	border-bottom: dotted 1px #aaa;
+}
+
+.aauthor {
+	position: absolute;
+	top: 5px;
+	right: 3px;
+	font-size: 0.9em;
+	border-bottom: dotted 1px #aaa;
+}
+
+.cauthor {
+	position: absolute;
+	top: 5px;
+	right: 3px;
+	font-size: 0.9em;
+	border-bottom: dotted 1px #aaa;
+}
+
+.qauthor > a:link, .qauthor > a:visited, .aauthor > a:link, .aauthor > a:visited, .cauthor > a:link, .cauthor > a:visited {
+	color: #888;
+	text-decoration: none;
+}
+
+.qauthor > a:hover, .aauthor > a:hover, .cauthor > a:hover {
+	color: #ccc;
+}
+
+.qexcerpt {
+	color: #444;
+	font-size: 0.9em;
+	display: block;
+}
+
+.ans_content {
+	color: #444;
+	font-size: 0.9em;
+	display: block;	
+}
+
+.qstats {
+	margin-top: 3px;
+	margin-bottom: 3px;
+	border-top: dotted 1px #aaa;
+	width: 100%;
+	display: block;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	font-size: 0.8em;
+	color: #888;
+}
+
+.astats {
+	margin-top: 3px;
+	border-top: dotted 1px #aaa;
+	width: 100%;
+	display: block;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	font-size: 0.8em;
+	color: #888;
+}
+
+.tags {
+	position: absolute;
+	right: 0px;
+	text-align: right;
+}
+
+.tags > a:link, .tags > a:visited  {
+	background-color: #aaa;
+	padding: 3px;
+	margin: 2px;
+	border-radius: 2px;
+	color: black;
+	text-decoration: none;
+}
+
+.tags > a:hover {
+	color: #ddd;
+}
