@@ -4,6 +4,9 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 if(isset($_SESSION['userid'])) {
 	require "connect.php";
+	if(!function_exists("notify")) {
+		require "notify.php";
+	}
 	if(isset($_POST['answer'])) {
 		if(checkVote($_POST['answer'])) {
 			if($_POST['dir']>0) {
@@ -19,6 +22,7 @@ if(isset($_SESSION['userid'])) {
 			} else {
 				echo $vote;
 				trackVote();
+				notify($_POST['answer'], NOT_ORI_ANSWER, NOT_TYPE_VOTE_RECEIVED);
 			}
 		} else {
 			echo "already voted";

@@ -26,14 +26,20 @@ if(!isset($_SESSION['userid'])){
 	echo "<a href='register.php'>Sign Up</a></p>";
 	echo "<p><span class='click_option' onclick='pwdReset();'>Forgot your password?</span></p>";
 } else {
+	require "connect.php";
+	require "notify.php";
 	echo "<p><img id='avatar_thumb' src='profile_pics/thumbs/";
 	if(!file_exists("profile_pics/thumbs/".$_SESSION['avatar'].".jpg")) {
 		echo "default.png'";
 	} else {
 		echo $_SESSION['avatar'].".jpg'"; 
 	}
-	echo "><a href='account.php'>".$_SESSION['screenname'];
-	echo "</a> | <a href='logout.php'>Logout</a></p>";
+	echo "><a href='account.php'>".$_SESSION['screenname']."</a>";
+	$nots = hasNotifications($_SESSION['userid']);
+	if($nots) {
+		echo "<span class='not_counter click_option'> ($nots) </span>";
+	}
+	echo " | <a href='logout.php'>Logout</a></p>";
 	if($_SESSION['pwdRst']==1) {
 		echo $_SESSION['pwdRst'];
 		echo "<p>You must change your password now!</p>";
