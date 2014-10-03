@@ -30,7 +30,7 @@ if(isset($_POST['ack'])) {
 
 if(isset($_POST['count'])) {
 	if($_POST['count']==1) {
-		require "connect.php";
+		$track_activity = false;
 		require "session.php";
 		if(isset($_SESSION['userid'])) {
 			echo hasNotifications($_SESSION['userid']);
@@ -117,4 +117,5 @@ function ackNotifications() {
 		}
 	}
 }
+
 ?>

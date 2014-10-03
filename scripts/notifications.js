@@ -68,7 +68,6 @@ function ackNotifications() {
 			ack: 1
 		},
 		success: function(data) {
-			console.info(data);
 			if(data=="ACK") {
 				showNotifications(updateNotifications());
 				updateCounter();

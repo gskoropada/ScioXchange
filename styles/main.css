@@ -70,3 +70,11 @@ body {
 .hidden {
 	display: none;
 }
+
+#wordcloud {
+	width: 550px; 
+	height: 350px; 
+	position: relative;
+	float:right;
+	border: dotted 1px #888;
+}

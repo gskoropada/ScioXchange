@@ -14,6 +14,9 @@ switch($_REQUEST['action']) {
 	case "tree":
 		buildTree($_REQUEST['level'], -1,0);
 		break;
+	case "cloud":
+		echo tagsCloud();
+		break;
 }
 
 
@@ -149,6 +152,35 @@ function getTagCount($tag) {
 	} else {
 		$count = mysqli_fetch_array($result);
 		return $count[0]; 
+	}
+}
+
+function tagsCloud() {
+	/*word_list = [
+	{text: "Lorem", weight: 15},
+	{text: "Ipsum", weight: 9, link: "http://jquery.com/"},
+	{text: "Dolor", weight: 6},
+	{text: "Sit", weight: 7},
+	{text: "Amet", weight: 5}*/
+	global $con;
+	$query = "SELECT tag, tag_count FROM tag ORDER BY tag_count DESC LIMIT 35";
+	$result = mysqli_query($con, $query);
+	
+	if(!$result) {
+		echo mysqli_error($con);
+	} else {
+		$cloud = "[";
+		$rows = mysqli_num_rows($result);
+		$i = 0;
+		while($tag = mysqli_fetch_assoc($result)) {
+			$cloud .= "{\"text\": \"".ucwords($tag['tag'])."\", \"weight\":".$tag['tag_count']."}";
+			$i++;
+			if($i != $rows) {
+				$cloud .= ",";
+			}
+		}
+		$cloud .= "]";
+		echo $cloud;
 	}
 }
 ?>
