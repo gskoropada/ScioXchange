@@ -7,7 +7,7 @@
 //variables for html_start.php
 $title = "Scio Exchange - Account settings";
 $styles = ["main.css","header.css","account.css"];
-$scripts = ["jquery-1.11.1.js","form_validation.js", "account.js"];
+$scripts = ["form_validation.js", "account.js"];
 
 require('html_start.php');
 

@@ -34,7 +34,9 @@ echo "</div>";
 getAnswers(); 
 
 if(isset($_SESSION['userid'])) {
-	require("forms/reply_form.php");
+	if(getUser($_GET['id'], NOT_ORI_QUESTION)!=$_SESSION['userid']) {
+		require("forms/reply_form.php");
+	}
 }
 echo "</div>"; //Wrapper
 require("html_end.php"); 

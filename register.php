@@ -7,7 +7,7 @@
 //Variables for html_start.php
 $title = "Scio Exchange - Registration";
 $styles = ["main.css", "header.css"];
-$scripts = ["jquery-1.11.1.js", "registration_form.js", "form_validation.js"];
+$scripts = [ "registration_form.js", "form_validation.js"];
 
 require('html_start.php');
 require('header.php');

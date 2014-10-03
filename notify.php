@@ -16,10 +16,32 @@ define("NOT_TYPE_ANS_RECEIVED", 0);
 define("NOT_TYPE_COMM_RECEIVED", 1);
 define("NOT_TYPE_VOTE_RECEIVED", 2);
 
-function notify($origin, $type ,$not_type) {
+if(isset($_POST['get_notifications'])) {
+	if($_POST['get_notifications'] == 1) {
+		fetchNotifications();
+	}
+}
+
+if(isset($_POST['ack'])) {
+	if($_POST['ack']==1) {
+		ackNotifications();
+	}
+}
+
+if(isset($_POST['count'])) {
+	if($_POST['count']==1) {
+		require "connect.php";
+		require "session.php";
+		if(isset($_SESSION['userid'])) {
+			echo hasNotifications($_SESSION['userid']);
+		}
+	}
+}
+
+function notify($origin, $type ,$not_type, $parent) {
 	require "connect.php";
-	$query = "INSERT INTO notification (user, not_type, origin, origin_type, timestamp)
-			 VALUES (".getUser($origin, $type).", $not_type, $origin, $type, '".date("c")."')";
+	$query = "INSERT INTO notification (user, not_type, origin, origin_type, parent, timestamp)
+			 VALUES (".getUser($origin, $type).", $not_type, $origin, $type, $parent, '".date("c")."')";
 	$result = mysqli_query($con, $query);
 
 	if(!$result) {
@@ -60,7 +82,39 @@ function hasNotifications($user) {
 	} else {
 		$nots = mysqli_fetch_array($result);
 		return $nots[0];
+	}	
+}
+
+function fetchNotifications() {
+	require "connect.php";
+	require "session.php";
+	if(isset($_SESSION['userid'])) {
+		$query = "SELECT not_id, origin, origin_type, not_type, timestamp, parent, status FROM notification WHERE user = ".$_SESSION['userid']." ORDER BY timestamp DESC LIMIT 20";
+		$result = mysqli_query($con, $query);
+		if(!$result) {
+			echo mysqli_error($con);
+		} else {
+			$notifications = array();
+			while ($not = mysqli_fetch_assoc($result)){
+				$notifications[] = $not;
+			}
+			echo json_encode($notifications);
+		}
 	}
-	
+}
+
+function ackNotifications() {
+	require "connect.php";
+	require "session.php";
+	if(isset($_SESSION['userid'])) {
+		$query = "UPDATE notification SET status = 1 WHERE user=".$_SESSION['userid']." AND timestamp < '".date("c")."' AND NOT status";
+		$result = mysqli_query($con, $query);
+		if(!$result) {
+			echo mysqli_error($con);
+		} else {
+			echo "ACK";
+			
+		}
+	}
 }
 ?>

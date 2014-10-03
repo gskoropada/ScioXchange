@@ -13,10 +13,67 @@
 }
 #status {
 	float: right;
+	min-width: 250px;
 }
 
 #menu {
 	position: absolute;
 	bottom: 0px;
 	right: 0px;
+}
+
+#notifications {
+	position: absolute;
+	top: 75px;
+	right: 5px;
+	background-color: #eee;
+	width: 200px;
+	max-height: 250px;
+	font-size: 0.8em;
+	z-index: 500;
+	overflow: auto;
+	box-shadow: 5px 5px 3px #888;
+	border-radius: 4px;
+}
+
+.close_not {
+	text-align: right;
+	display: block;
+	width: 98%;
+	color: #ccc;
+	border-bottom: dotted 1px #ccc;
+}
+
+.not_msg {
+	min-height: 20px;
+	vertical-align: center;
+	border-bottom: dotted 1px #888;
+	padding: 3px;
+}
+
+.not_msg:hover {
+	background-color: white;
+}
+.not_msg > a:link, .not_msg > a:visited {
+	text-decoration: none;
+	color: #888;
+}
+
+#not_counter {
+	position: relative;
+	bottom: 7px;
+	left: -5px;
+	background-color: #bbb;
+	color: #eee;
+	font-size: 0.8em;
+	padding: 4px;
+}
+
+.avatar {
+	float: left;
+	position: relative;
+}
+
+.not_read > a:link, .not_read > a:visited {
+	color: rgb(0,200,0);
 }

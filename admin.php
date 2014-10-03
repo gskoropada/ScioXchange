@@ -7,7 +7,7 @@
 //Variables for html_start.php
 $title = "Scio Exchange - Administration tools";
 $styles = ["main.css", "header.css", "admin.css"];
-$scripts = ["jquery-1.11.1.js", "admin_tools.js"];
+$scripts = ["admin_tools.js"];
 
 require('html_start.php');
 require('header.php');

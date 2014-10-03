@@ -4,7 +4,7 @@ require "connect.php";
 
 $title = "Scio Exchange - Questions";
 $styles = ["main.css","header.css","questions.css"];
-$scripts = ["jquery-1.11.1.js", "questions.js"];
+$scripts = ["questions.js"];
 
 require "html_start.php";
 require "header.php";

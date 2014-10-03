@@ -20,6 +20,8 @@
 	?>
 </head>
 <body>
+<script src='scripts/jquery-1.11.1.js'></script>
+<script src='scripts/notifications.js'></script>
 <?php
 	//Include required scripts
 	if(isset($scripts)) {

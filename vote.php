@@ -22,7 +22,7 @@ if(isset($_SESSION['userid'])) {
 			} else {
 				echo $vote;
 				trackVote();
-				notify($_POST['answer'], NOT_ORI_ANSWER, NOT_TYPE_VOTE_RECEIVED);
+				notify($_POST['answer'], NOT_ORI_ANSWER, NOT_TYPE_VOTE_RECEIVED, getParent($_POST['answer']));
 			}
 		} else {
 			echo "already voted";
@@ -57,6 +57,19 @@ function checkVote($id) {
 		} else {
 			return false;
 		}
+	}
+}
+
+function getParent($child) {
+	global $con;
+	$query = "SELECT question FROM answer WHERE answer_id=$child";
+	$result = mysqli_query($con, $query);
+	
+	if(!$result) {
+		echo mysqli_error($con);
+	} else {
+		$parent = mysqli_fetch_array($result);
+		return $parent[0];
 	}
 }
 ?>

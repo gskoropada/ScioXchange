@@ -18,6 +18,9 @@ if((!isset($_SESSION['userid'])) && indexRedirect()) {
 	<p>Your source of all knowledge</p>
 </div>
 <div id="status">
+<div id="notifications" class="hidden">
+	
+</div>
 <?php
 
 //Session aware menu options.
@@ -28,18 +31,19 @@ if(!isset($_SESSION['userid'])){
 } else {
 	require "connect.php";
 	require "notify.php";
-	echo "<p><img id='avatar_thumb' src='profile_pics/thumbs/";
+	$nots = hasNotifications($_SESSION['userid']);
+	echo "<p><div class='avatar'><img id='avatar_thumb' src='profile_pics/thumbs/";
 	if(!file_exists("profile_pics/thumbs/".$_SESSION['avatar'].".jpg")) {
 		echo "default.png'";
 	} else {
 		echo $_SESSION['avatar'].".jpg'"; 
 	}
-	echo "><a href='account.php'>".$_SESSION['screenname']."</a>";
-	$nots = hasNotifications($_SESSION['userid']);
-	if($nots) {
-		echo "<span class='not_counter click_option'> ($nots) </span>";
-	}
-	echo " | <a href='logout.php'>Logout</a></p>";
+	echo "></div>";
+	
+	echo "<span id='not_counter' class='click_option'>$nots</span>";
+	
+	echo "<div><a href='account.php'>".$_SESSION['screenname']."</a>";
+	echo " | <a href='logout.php'>Logout</a></p></div>";
 	if($_SESSION['pwdRst']==1) {
 		echo $_SESSION['pwdRst'];
 		echo "<p>You must change your password now!</p>";

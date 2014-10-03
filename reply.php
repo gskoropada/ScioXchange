@@ -14,7 +14,7 @@ if(isset($_SESSION['userid'])) {
 		echo -1;
 	} else {
 		echo 1;
-		notify($_POST['qid'], NOT_ORI_QUESTION, NOT_TYPE_ANS_RECEIVED);
+		notify($_POST['qid'], NOT_ORI_QUESTION, NOT_TYPE_ANS_RECEIVED, $_POST['answer']);
 	}
 }
 ?>
