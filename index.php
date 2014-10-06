@@ -7,8 +7,8 @@
 
 //Variables for html_start.php
 $title = "Scio Exchange";
-$styles = ["main.css","header.css", "jqcloud.css"];
-$scripts = ["jqcloud-1.0.4.js","wordcloud.js"]; // Using jqcloud by Luca Ongaro
+$styles = ["main.css","header.css", "jqcloud.css", "question_slider.css"];
+$scripts = ["jqcloud-1.0.4.js","wordcloud.js", "question_slider.js"]; // Using jqcloud by Luca Ongaro
 
 require("html_start.php");
 require("header.php");

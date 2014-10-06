@@ -72,9 +72,29 @@ body {
 }
 
 #wordcloud {
-	width: 550px; 
+	width: 40%; 
 	height: 350px; 
 	position: relative;
 	float:right;
 	border: dotted 1px #888;
+	margin: 0px;
+}
+
+#question_slider {
+	width: 100%;
+	height: 150px;
+	position: relative;
+	float: left;
+	margin: 0px;
+	overflow: hidden;
+}
+
+#home_content {
+	width: 59.5%;
+	height: 350px;
+	position: relative;
+	float: left;
+	border: dotted 1px #888;
+	margin: 0px;
+	
 }

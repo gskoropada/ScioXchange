@@ -1,9 +1,16 @@
 <?php
 set_time_limit(0);
 
+define("OPT_CLOSE", "^Q");
+define("OPT_ACK","^ACK");
+define("OPT_NEW_CHAT","^NC");
+define("OPT_MSG","^MSG");
+
+define("STATUS_ONLINE", 1);
+
 $HostAddress = "127.0.0.1";
 $HostPort = 2500;
-$max_clients = 2;
+$max_clients = 5;
 
 $sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 
@@ -15,6 +22,8 @@ socket_listen($sock, 10);
 echo "Listening for connections...\n";
 
 $client_conn = array();
+$users = array();
+$chats = array();
 
 $live = true;
 do {
@@ -31,12 +40,15 @@ do {
 			sendHandshake($new_client);
 		} else {
 				$dump = socket_accept($sock);
+				sendHandshake($dump);
 				echo "Incomming connection rejected. Too many clients\n";
-				socket_write($dump, "Too many clients, try again later.\n\r");
+				$discard = socket_read($dump,1024);
+				socket_write($dump, wsEncode("Too many clients, try again later."));
 				socket_close($dump);
 		}
 	}
 
+	//Reads data from clients.
 	foreach($read as $client) {
 		
 		if($client != $sock) {
@@ -45,11 +57,24 @@ do {
 			if(!$input) {
 				removeClient($client);
 			} else {
-				echo "Receiving data from $address : $port || $input \n";
-				socket_write($client, "Received...\r\n");
-				if($input == "exit" || $input = "") {
+				echo "Receiving data from $address : $port\n";
+				$dec = wsDecode($input);
+				if($dec==OPT_CLOSE) {
 					removeClient($client);
-				} 
+				} else {
+					$msg = json_decode($dec,true);
+					switch($msg['opt']) {
+						case "register":
+							register($client, $msg['usr']);
+							break;
+						case "start":
+							startChat($msg['usr'], $msg['to']);
+							break;
+						case OPT_MSG:
+							sendMsg($msg['chid'],$msg['usr'],$msg['msg']);
+							break;
+					}
+				}
 			}
 		}
 	}
@@ -70,7 +95,6 @@ function sendHandshake($cl) {
 	global $HostPort;
 	
 	$h = explode("\r\n", trim(socket_read($cl,2048)));
-	echo "Header \n";
 	$headers = array();
 	foreach($h as $line) {
 		if(strpos($line,": ")) {
@@ -92,8 +116,102 @@ function sendHandshake($cl) {
 }
 
 function wsDecode($frame) {
-	$firstByte = substr($frame, 0,1);
-	$secondByte = substr($frame, 0,1);
+	$bytes = array();
+	$bytes['opcode'] = unpack("C", substr($frame, 0,1));
+	$bytes['payload'] = unpack("C", substr($frame, 1,1));
 	
+	$payload_lenght = $bytes['payload'][1] & 0x7f;
+	
+	$opcode = $bytes['opcode'][1] & 0x0f;
+	
+	$bytes['mask'][] = unpack("C", substr($frame, 2,1));
+	$bytes['mask'][] = unpack("C", substr($frame, 3,1));
+	$bytes['mask'][] = unpack("C", substr($frame, 4,1));
+	$bytes['mask'][] = unpack("C", substr($frame, 5,1));
+
+	$decode = "";
+	
+	if($opcode == 0x8) {
+		$data = unpack("S",substr($frame, 6, 2));
+		echo $data[1]."\n";
+		return OPT_CLOSE;
+	} else if ($opcode == 0x1) {
+		for($i=6;$i<($payload_lenght+6);$i++) {
+			$data = unpack("C",substr($frame, $i, 1));
+			$decode .= chr($data[1] ^ $bytes['mask'][($i-6) % 4][1]);
+		}
+		return $decode;
+	}
+}
+
+function wsEncode($msg) {
+	$esc_msg = $msg;
+	$payload_lenght=strlen($esc_msg);
+
+	$encode = pack("C",129);
+
+	if($payload_lenght <= 125) {
+		$encode .= pack("C",$payload_lenght);
+	} else if($payload_lenght >= 126 && $payload_lenght <= 65535) {
+		$encode .= pack("C", 126);
+		$encode .= pack("N", $payload_lenght);
+	} else {
+		$encode .= pack("C", 127);
+		$left = 0xffffffff00000000;
+		$right = 0x00000000ffffffff;
+		
+		$l = ($payload_lenght & $left) >>32;
+		$r = $payload_lenght & $right;
+		$encode .= pack("NN", $l, $r);
+	}
+	
+	for($i=0;$i<$payload_lenght;$i++) {
+		$encode .= pack("C", ord(substr($esc_msg,$i,1)));
+	}
+
+	return $encode;
+}
+
+function register($cl, $usr) {
+	global $users;
+	socket_getpeername($cl, $address, $port);
+	$users[$usr]['socket'] = $cl;
+	$users[$usr]['status'] = STATUS_ONLINE;
+	$users[$usr]['timestamp'] = date("c");
+	$msg['opt']=OPT_ACK;
+	socket_write($cl, wsEncode(json_encode($msg)));
+	echo "Client $address : $port registered.\n";
+}
+
+function startChat($usr, $to) {
+	global $users;
+	global $chats;
+	socket_getpeername($users[$usr]['socket'],$address_from, $port_from);
+	socket_getpeername($users[$to]['socket'],$address_to, $port_to);
+	$id=uniqid("CH");
+	$chats[$id]['from']=$usr;
+	$chats[$id]['to']=$to;
+	echo "Chat started between $address_from:$port_from and $address_to:$port_to\n";
+	$msg['opt']=OPT_NEW_CHAT;
+	$msg['chid']=$id;
+	socket_write($users[$usr]['socket'],wsEncode(json_encode($msg)));
+	socket_write($users[$to]['socket'],wsEncode(json_encode($msg)));
+}
+
+function sendMsg($chid, $usr, $msg) {
+	global $users;
+	global $chats;
+	socket_getpeername($users[$usr]['socket'],$address_from, $port_from);
+	if($chats[$chid]['from']==$usr) {
+		$dest = $users[$chats[$chid]['to']]['socket'];
+	} else if($chats[$chid]['to']==$usr) {
+		$dest = $users[$chats[$chid]['from']]['socket'];
+	}
+	socket_getpeername($dest, $address_to, $port_to );
+	echo "Message sent by $address_from:$port_from to $address_to:$port_to\n";
+	$msg_obj['opt']=OPT_MSG;
+	$msg_obj['msg']=$msg."\n";
+	
+	socket_write($dest,wsEncode(json_encode($msg_obj)));
 }
 ?>

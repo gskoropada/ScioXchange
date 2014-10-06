@@ -1,14 +1,26 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+<script src="..\scripts\jquery-1.11.1.js"></script>
 <script>
+	var socket;
 	function connect() {
-		var socket = new WebSocket("ws://127.0.0.1:2500");
+		socket = new WebSocket("ws://127.0.0.1:2500");
 		
 		socket.onopen = function(ev) {
-			alert("Connected");
-			socket.send("Testing");
+			socket.send("Testing - 1,2,3,4...");
 		}
+		
+		socket.onmessage = function (evt) 
+	     { 
+	        var received_msg = evt.data;
+	        $("#incomming").append(evt.data);
+	     };
+	}
+	
+	function sendMsg() {
+		var msg = $("#msg").val();
+		socket.send(msg);
 	}
 	
 </script>
@@ -17,5 +29,8 @@
 <div id="sse">
    <a href="javascript:connect()">connect</a>
 </div>
+<input type="text" id="msg">
+<button onclick="sendMsg();">Submit</button>
+<textarea id="incomming"></textarea>
 </body>
 </html>
