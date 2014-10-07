@@ -8,7 +8,7 @@ $(function() {
 			},
 			success: function(notifications) {
 				showNotifications(notifications);
-				setTimeout(function() {ackNotifications();}, 3500);
+				setTimeout(function() {ackNotifications();}, 500);
 			}
 		});
 	});

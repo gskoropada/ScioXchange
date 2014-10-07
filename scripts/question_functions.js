@@ -7,7 +7,7 @@ function listQuestions(questions, target) {
 
 function display(question, target) {
 	var d = new Date(question.timestamp);
-	$(target).append("<div id='"+question.question_id+"' class='question click_option'>" +
+	$(target).append("<div class='question click_option' onclick='redirect("+question.question_id+");'>" +
 			"<p class='qtitle'>"+question.question_title+"</p><span class='qauthor'><a href='user_profile.php?id="+
 			question.auth+"'>"+question.screenName+"</a></span><span class='qexcerpt'><pre>"+excerpt(question.q)+"</pre></span>"+
 			"<span class='qstats'>"+d.toLocaleDateString()+" | "+replies(question.replies)+
@@ -39,4 +39,8 @@ function excerpt(question) {
 		question = question.substr(0,255) + "...";
 	}
 	return question;
+}
+
+function redirect(id) {
+	location.assign("question.php?id="+id);	
 }

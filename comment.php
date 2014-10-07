@@ -20,10 +20,14 @@ if(isset($_POST['comm_type'])) {
 			echo "Comment saved";
 			if($_POST['comm_type']==NOT_ORI_ANSWER) {
 				$parent = getParent($_POST['link']);
+				$usr = getUser($_POST['link'],NOT_ORI_ANSWER);
 			} else if($_POST['comm_type']==NOT_ORI_QUESTION) {
 				$parent = $_POST['link'];
+				$usr = getUser($_POST['link'],NOT_ORI_QUESTION);
 			}
-			notify($_POST['link'], $_POST['comm_type'],NOT_TYPE_COMM_RECEIVED, $parent);
+			if($usr != $_SESSION['userid']) {
+				notify($_POST['link'], $_POST['comm_type'],NOT_TYPE_COMM_RECEIVED, $parent);
+			}
 		}
 	} else {
 		echo "Not logged in";
