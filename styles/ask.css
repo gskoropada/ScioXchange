@@ -1,0 +1,22 @@
+@CHARSET "ISO-8859-1";
+
+textarea {
+	background-color: rgba(200,200,200,0.6);
+	width: 100%;
+	border: none;
+	min-height: 5em;
+}
+
+input {
+	background-color: rgba(200,200,200,0.6);
+	width: 100%;
+	border: none;
+}
+
+.tip {
+	font-size: 0.8em;
+}
+
+#tagSuggest {
+	color: #888;
+}

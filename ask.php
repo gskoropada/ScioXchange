@@ -1,7 +1,7 @@
 <?php
 
 $title = "Scio Exchange - Ask a question";
-$styles = ["main.css", "header.css"];
+$styles = ["main.css", "header.css","ask.css"];
 $scripts = ["ask.js"];
 
 include "html_start.php";

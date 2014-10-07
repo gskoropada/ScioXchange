@@ -49,7 +49,7 @@ function listQuestions($slider) {
 			$d = new DateTime($question['timestamp']);
 			echo "<div id=\"".$question['question_id']."\" class='question qredirect click_option'><p class='qtitle'>".$question['question_title']."</p>";
 			echo "<span class='qauthor'><a href=\"user_profile.php?id=".$question['auth']."\">".$question['screenName']."</a></span>";
-			echo "<span class='qexcerpt'>$q</span>";
+			echo "<span class='qexcerpt'><pre>$q</pre></span>";
 			echo "<span class='qstats'>".date_format($d, "d-M-Y")." | $r";
 			echo "<span class='tags'>";
 			$tags = explode(', ' , $question['tags']);
@@ -78,7 +78,7 @@ function getAnswers($id, $slider) {
 	$result = mysqli_query($con, $sql);
 
 	while($answers = mysqli_fetch_assoc($result)) {
-		echo "<div class='answer' id='ans_".$answers['answer_id']."'><span class='ans_content'>".nl2br($answers['content'])."</span><span class='aauthor'><a href=\"user_profile.php?id="
+		echo "<div class='answer' id='ans_".$answers['answer_id']."'><span class='ans_content'><pre>".$answers['content']."</pre></span><span class='aauthor'><a href=\"user_profile.php?id="
 				.$answers['author']."\">".$answers['screenName']."</a></span>";
 		echo "<span id='rating_".$answers['answer_id']."' class='rating ";
 		if($answers['rating']>0) {
@@ -91,8 +91,10 @@ function getAnswers($id, $slider) {
 		if(isset($_SESSION['userid'])) {
 			echo " | <span id='".$answers['answer_id']."' class='click_option btnAComment'>Leave a comment</span>";
 			if(checkVote($answers['answer_id'])) {
-				echo " | <span id='".$answers['answer_id']."' class='click_option thumb_up'>Thumbs Up</span>";
-				echo " | <span id='".$answers['answer_id']."' class='click_option thumb_down'>Thumbs down</span>";
+				if($_SESSION['userid'] != $answers['author']) {
+					echo " | <span id='".$answers['answer_id']."' class='click_option thumb_up'>Thumbs Up</span>";
+					echo " | <span id='".$answers['answer_id']."' class='click_option thumb_down'>Thumbs down</span>";
+				}
 			} else {
 				echo " | Already voted.";
 			}
@@ -118,6 +120,25 @@ function getComments($type, $id) {
 		echo "<pre>".$comment['comment']."</pre>";
 		echo "<span class='comment_timestamp'>".date_format(new DateTime($comment['timestamp']), "d-M-y")."</span>";
 		echo "</div>";
+	}
+}
+
+function hasAnswered($id) {
+	global $con;
+	
+	$query = "SELECT count(answer_id) FROM answer WHERE question=$id AND author=".$_SESSION['userid'];
+	$result = mysqli_query($con, $query);
+	
+	if(!$result) {
+		echo myseli_error($con);
+	} else {
+		$h = mysqli_fetch_array($result);
+		if($h[0] > 0) {
+			return true;
+			
+		} else {
+			return false;
+		}
 	}
 }
 

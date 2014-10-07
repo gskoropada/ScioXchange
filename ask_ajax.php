@@ -21,7 +21,8 @@ function saveQuestion($title, $quest, $tags) {
 	
 	global $con;
 	
-	$sql = "INSERT INTO question (author, question_title, content, tags, timestamp) values ('$author', '$title', '".mysqli_real_escape_string($con,$quest)."', '$tags','".date("c")."')";
+	$sql = "INSERT INTO question (author, question_title, content, tags, timestamp) values 
+	('$author', '$title', '".mysqli_real_escape_string($con,$quest)."', '$tags','".date("c")."')";
 	
 	$result = mysqli_query($con, $sql);
 	

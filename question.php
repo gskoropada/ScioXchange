@@ -18,7 +18,7 @@ require "questions_backend.php";
 $d = new DateTime($question['timestamp']);
 echo "<div id='wrapper'>";
 echo "<div class='question'><p class='qtitle'>".$question['question_title']."</p>"; 
-echo "<span class='qexcerpt'><p>".$question['content']."</p></span>";
+echo "<span class='qexcerpt'><p><pre>".$question['content']."</pre></p></span>";
 echo "<span class='qstats'>".date_format($d,"d-M-y");
 if(isset($_SESSION['userid'])) {
 	echo " | <span id='".$_GET['id']."' class='btnQComment click_option'>Leave a comment</span>";
@@ -35,7 +35,7 @@ echo "</div>";
 getAnswers($_GET['id'], false); 
 
 if(isset($_SESSION['userid'])) {
-	if(getUser($_GET['id'], NOT_ORI_QUESTION)!=$_SESSION['userid']) {
+	if(getUser($_GET['id'], NOT_ORI_QUESTION)!=$_SESSION['userid'] && !hasAnswered($_GET['id'])) {
 		require("forms/reply_form.php");
 	}
 }

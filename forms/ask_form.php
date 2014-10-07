@@ -8,13 +8,12 @@
 	</p>
 	<p>
 		<label for="question_text">Question:</label>
-		<input type="textarea" name="question" id="inQuestion">
+		<textarea name="question" id="inQuestion" placeholder="Type your question here..."></textarea>
 	</p>
 	<p>
-		<label for="tags">Tags:</label>
+		<label for="tags">Tags </label><span class="tip">(Multiple tags can be seperated with a comma, like so: "tag1,tag2")</span>
 		<input type="text" name="tags" id="inTags"><span id="tagSuggest"></span>
-		</br>Multiple tags can be seperated with a comma and a space, like so: "tag1, tag2"
 	</p>
 	<p>
-		<input type="button" name="submit" id="btnAsk" value="Ask!"><span id="msgArea"></span>
+		<button name="submit" id="btnAsk">Ask!</button><span id="msgArea"></span>
 	</p>
