@@ -1,0 +1,82 @@
+@CHARSET "ISO-8859-1";
+#usrStats {
+	width:19%;
+	float: left;
+}
+
+#usrQuestions {
+	width: 79%;
+	float: right;
+	border-left: dotted 1px #888;
+}
+
+#dashOptions {
+	width: 100%;
+}
+
+#dashOptions > p {
+	margin: auto;
+	display: inline;
+}
+.question {
+	position: relative;
+	width: 95%;
+	background-color: #ddd;
+	margin: auto;
+	margin-bottom: 5px;
+	padding: 5px;
+	border-radius: 3px;
+}
+
+.qauthor {
+	position: absolute;
+	top: 5px;
+	right: 3px;
+	font-size: 0.9em;
+	border-bottom: dotted 1px #aaa;
+}
+
+.qauthor > a:link, .qauthor > a:visited, .aauthor > a:link, .aauthor > a:visited, .cauthor > a:link, .cauthor > a:visited {
+	color: #888;
+	text-decoration: none;
+}
+
+.qauthor > a:hover, .aauthor > a:hover, .cauthor > a:hover {
+	color: #ccc;
+}
+
+.qexcerpt {
+	color: #444;
+	font-size: 0.9em;
+	display: block;
+}
+
+.qstats {
+	margin-top: 3px;
+	margin-bottom: 3px;
+	border-top: dotted 1px #aaa;
+	width: 100%;
+	display: block;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	font-size: 0.8em;
+	color: #888;
+}
+.tags {
+	position: absolute;
+	right: 0px;
+	text-align: right;
+}
+
+.tags > a:link, .tags > a:visited  {
+	background-color: #aaa;
+	padding: 3px;
+	margin: 2px;
+	border-radius: 2px;
+	color: black;
+	text-decoration: none;
+}
+
+.tags > a:hover {
+	color: #ddd;
+}

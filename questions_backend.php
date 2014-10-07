@@ -6,8 +6,12 @@ if(!isset($con)) {
 
 if(isset($_POST['slider'])) {
 	if($_POST['slider'] == 1) {
-		slider();
+		fetchQuestions(5,0,0);
 	}
+}
+
+if(isset($_POST['fetch'])) {
+	fetchQuestions($_POST['fetch'], $_POST['id'], $_POST['offset']);
 }
 
 
@@ -142,15 +146,34 @@ function hasAnswered($id) {
 	}
 }
 
-function slider() {
+function fetchQuestions($num, $id, $offset) {
 	global $con;
+	if($id != 0) {
+		$by = "WHERE question.author = $id ";
+	} else {
+		$by ="";
+	}
+	
+	if($num != 0) {
+		$limit = "LIMIT $num";
+	} else {
+		$limit = "";
+	}
+	
+	if($offset != 0) {
+		$off = "OFFSET $offset";
+	} else {
+		$off = "";
+	}
+	
 	$query =
 	"SELECT question.author as auth, question_id, question_title, question.content as q, tags, replies, screenName, timestamp FROM question
 	LEFT JOIN
 		(SELECT count(answer_id) as replies, question from answer group by question) as reply
-	on question_id = question
+	on question_id = question 
 	INNER JOIN user on question.author = UserID
-	ORDER BY timestamp DESC ";
+	$by 
+	ORDER BY timestamp DESC $limit $off";
 	
 	$result = mysqli_query($con, $query);
 	$questions = array();
