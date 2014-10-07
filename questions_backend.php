@@ -6,7 +6,7 @@ if(!isset($con)) {
 
 if(isset($_POST['slider'])) {
 	if($_POST['slider'] == 1) {
-		listQuestions(true);
+		slider();
 	}
 }
 
@@ -118,6 +118,29 @@ function getComments($type, $id) {
 		echo "<pre>".$comment['comment']."</pre>";
 		echo "<span class='comment_timestamp'>".date_format(new DateTime($comment['timestamp']), "d-M-y")."</span>";
 		echo "</div>";
+	}
+}
+
+function slider() {
+	global $con;
+	$query =
+	"SELECT question.author as auth, question_id, question_title, question.content as q, tags, replies, screenName, timestamp FROM question
+	LEFT JOIN
+		(SELECT count(answer_id) as replies, question from answer group by question) as reply
+	on question_id = question
+	INNER JOIN user on question.author = UserID
+	ORDER BY timestamp DESC ";
+	
+	$result = mysqli_query($con, $query);
+	$questions = array();
+	
+	if(!$result) {
+		echo mysqli_error($con);
+	} else {
+		while ($q = mysqli_fetch_assoc($result)) {
+			$questions[] = $q;
+		}
+		echo json_encode($questions);
 	}
 }
 
