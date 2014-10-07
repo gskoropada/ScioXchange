@@ -6,14 +6,17 @@ if(!isset($con)) {
 
 if(isset($_POST['slider'])) {
 	if($_POST['slider'] == 1) {
-		fetchQuestions(5,0,0);
+		fetchQuestions(5,0,0,"");
 	}
 }
 
 if(isset($_POST['fetch'])) {
-	fetchQuestions($_POST['fetch'], $_POST['id'], $_POST['offset']);
+	fetchQuestions($_POST['fetch'], $_POST['id'], $_POST['offset'],"");
 }
 
+if(isset($_POST['tag'])) {
+	fetchQuestions($_POST['limit'],0,$_POST['offset'],$_POST['tag']);
+}
 
 function listQuestions($slider) {
 	global $con;
@@ -59,7 +62,8 @@ function listQuestions($slider) {
 			$tags = explode(', ' , $question['tags']);
 				
 			foreach($tags as $tag) {
-				echo "<a href='#'>$tag</a> ";
+				$tag = trim($tag);
+				echo "<a href='tag.php?tag=$tag'>$tag</a> ";
 			}
 				
 			echo "</span></span>";
@@ -146,7 +150,7 @@ function hasAnswered($id) {
 	}
 }
 
-function fetchQuestions($num, $id, $offset) {
+function fetchQuestions($num, $id, $offset, $tag) {
 	global $con;
 	if($id != 0) {
 		$by = "WHERE question.author = $id ";
@@ -166,13 +170,23 @@ function fetchQuestions($num, $id, $offset) {
 		$off = "";
 	}
 	
+	if($tag != "") {
+		if($id != 0) {
+			$t = "AND tags LIKE '%$tag%'";
+		} else {
+			$t = "WHERE tags LIKE '%$tag%'";
+		}
+	} else {
+		$t = "";
+	}
+	
 	$query =
 	"SELECT question.author as auth, question_id, question_title, question.content as q, tags, replies, screenName, timestamp FROM question
 	LEFT JOIN
 		(SELECT count(answer_id) as replies, question from answer group by question) as reply
 	on question_id = question 
 	INNER JOIN user on question.author = UserID
-	$by 
+	$by $t
 	ORDER BY timestamp DESC $limit $off";
 	
 	$result = mysqli_query($con, $query);

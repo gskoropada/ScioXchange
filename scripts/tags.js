@@ -1,24 +1,18 @@
 $(function() {
-	
-	var root_tags = [];
-	
 	$.ajax({
-		type: 'POST',
-		url: 'tag_functions.php',
+		type: "POST",
+		url: "questions_backend.php",
 		data: {
-			action: "rt"
+			tag: $("#id_tag").val(),
+			limit: 10,
+			offset: 0
 		},
-		dataType: "json",
 		success: function(data) {
-			
-			root_tags = data;
-			
-			for(var i=0; i<data.length; i++) {
-				console.info(data[i]);
-				$("#tree").append("<li>"+data[i].tag+"</li>");
-			}
-			
-			console.info(root_tags);
+			console.info(data);
+			var target = $("#tag_questions"); 
+			listQuestions(JSON.parse(data), "#tag_questions");
 		}
 	});
+	
+
 });

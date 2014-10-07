@@ -173,7 +173,7 @@ function tagsCloud() {
 		$rows = mysqli_num_rows($result);
 		$i = 0;
 		while($tag = mysqli_fetch_assoc($result)) {
-			$cloud .= "{\"text\": \"".ucwords($tag['tag'])."\", \"weight\":".$tag['tag_count']."}";
+			$cloud .= "{\"text\": \"".ucwords($tag['tag'])."\", \"weight\":".$tag['tag_count'].", \"link\": \"tag.php?tag=".trim($tag['tag'])."\"}";
 			$i++;
 			if($i != $rows) {
 				$cloud .= ",";

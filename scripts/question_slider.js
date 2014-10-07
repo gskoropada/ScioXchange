@@ -15,10 +15,10 @@ $(function() {
 function slider(questions) {
 	var i=1;
 	var delay = 5000;
-	display(questions,0);
+	display(questions[0], "#question_slider");
 	
 	setInterval(function() {
-		display(questions, i);
+		display(question[i],"#question_slider");
 
 		i++;
 		if(i==questions.length){
@@ -26,40 +26,4 @@ function slider(questions) {
 		}
 	}, delay);
 	
-}
-
-function display(questions, i) {
-	d = new Date(questions[i].timestamp);
-	$("#question_slider").html("<div id='"+questions[i].question_id+"' class='question click_option'>" +
-			"<p class='qtitle'>"+questions[i].question_title+"</p><span class='qauthor'><a href='user_profile.php?id="+
-			questions[i].auth+"'>"+questions[i].screenName+"</a></span><span class='qexcerpt'><pre>"+excerpt(questions[i].q)+"</pre></span>"+
-			"<span class='qstats'>"+d.toLocaleDateString()+" | "+replies(questions[i].replies)+
-			"<span class='tags'>"+tagLinks(questions[i].tags)+"</span></span></div>");
-}
-
-function replies(n) {
-	if(n == null || n == 0) {
-		return "no replies";
-	}else if(n == 1) {
-		return "1 reply";
-	} else {
-		return n+" replies";
-	}
-}
-
-function tagLinks(tags) {
-	var t = tags.split(",");
-	var i;
-	var links = "";
-	for(i=0;i<t.length;i++){
-		links = links +"<a href='#'>"+t[i]+"</a>";
-	}
-	return links;
-}
-
-function excerpt(question) {
-	if(question.length > 255) {
-		question = question.substr(0,255) + "...";
-	}
-	return question;
 }

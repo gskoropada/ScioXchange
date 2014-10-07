@@ -26,7 +26,8 @@ if(isset($_SESSION['userid'])) {
 echo "<span class='tags'>";
 $tags = explode(',' , $question['tags']);
 foreach($tags as $tag) {
-	echo "<a href='#'>$tag</a> ";
+	$tag = trim($tag);
+	echo "<a href='tag.php?tag=$tag'>$tag</a> ";
 } 
 echo "</span></span><span class='qauthor'><a href=\"user_profile.php?id=".$question['author']."\">" . $question['screenName']."</a></span>";
 getComments(0, $_GET['id'] );
