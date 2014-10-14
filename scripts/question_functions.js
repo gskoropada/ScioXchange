@@ -14,6 +14,15 @@ function display(question, target) {
 			"<span class='tags'>"+tagLinks(question.tags)+"</span></span></div>");
 }
 
+function slide(question, target) {
+	var d = new Date(question.timestamp);
+	$(target).html("<div class='question click_option' onclick='redirect("+question.question_id+");'>" +
+			"<p class='qtitle'>"+question.question_title+"</p><span class='qauthor'><a href='user_profile.php?id="+
+			question.auth+"'>"+question.screenName+"</a></span><span class='qexcerpt'><pre>"+excerpt(question.q)+"</pre></span>"+
+			"<span class='qstats'>"+d.toLocaleDateString()+" | "+replies(question.replies)+
+			"<span class='tags'>"+tagLinks(question.tags)+"</span></span></div>");
+}
+
 function replies(n) {
 	if(n == null || n == 0) {
 		return "no replies";

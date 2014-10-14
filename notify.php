@@ -30,7 +30,7 @@ if(isset($_POST['ack'])) {
 
 if(isset($_POST['count'])) {
 	if($_POST['count']==1) {
-		$track_activity = false;
+		$track_activity = false; //Flag for session.php
 		require "session.php";
 		if(isset($_SESSION['userid'])) {
 			echo hasNotifications($_SESSION['userid']);
@@ -40,12 +40,21 @@ if(isset($_POST['count'])) {
 
 function notify($origin, $type ,$not_type, $parent) {
 	require "connect.php";
+	$usr = getUser($origin, $type);
 	$query = "INSERT INTO notification (user, not_type, origin, origin_type, parent, timestamp)
-			 VALUES (".getUser($origin, $type).", $not_type, $origin, $type, $parent, '".date("c")."')";
+			 VALUES ($usr, $not_type, $origin, $type, $parent, '".date("c")."')";
 	$result = mysqli_query($con, $query);
 
 	if(!$result) {
 		echo mysqli_error($con);
+	}
+	
+	if($type == NOT_ORI_ANSWER && $not_type == NOT_TYPE_VOTE_RECEIVED) {
+		echo "Rep update - vote received";
+		updateReputation(getUser($origin, $type));
+	} else if ($type == NOT_ORI_QUESTION && $not_type == NOT_TYPE_ANS_RECEIVED) {
+		updateReputation($_SESSION['userid']);
+		echo "Rep update - answered question";
 	}
 }
 
@@ -118,4 +127,24 @@ function ackNotifications() {
 	}
 }
 
+function updateReputation($user) {
+	global $con;
+	$query = "select (count(answer_id)+(sum(positive_votes) - sum(negative_votes))*2)/2 as reputation from answer where author = $user;";
+	$result = mysqli_query($con, $query);
+	
+	if(!$result) {
+		echo mysqli_error($con);
+	} else {
+		$reputation = mysqli_fetch_array($result);
+		$rep = $reputation['reputation'];
+		echo "$user: rep=$rep";
+		$query = "UPDATE user SET reputation = $rep WHERE UserID = $user";
+		$result = mysqli_query($con, $query);
+		
+		if(!$result) {
+			echo mysqli_error($con);
+		} 
+	}
+	
+}
 ?>

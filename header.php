@@ -14,7 +14,7 @@ if((!isset($_SESSION['userid'])) && indexRedirect()) {
 
 <div id="header">
 <div id="logo">
-	<a href="index.php"><img src="images/logo.png" /></a>
+	<h1><a href="index.php">ScioXchange</a></h1>
 	<p>Your source of all knowledge</p>
 </div>
 <div id="status">

@@ -14,9 +14,9 @@ require "questions_backend.php";
 //	<p><a href='index.php'>Home</a> > Questions</p>
 //</div>";
 echo "<div id='wrapper'><h2>Questions!</h2>";
-if(isset($_SESSION['userid'])) {
+/*if(isset($_SESSION['userid'])) {
 	echo "<span id='btnAsk' class='click_option'>Ask your own</span>";
-}
+}*/
 listQuestions(false);
 
 echo "</div>";

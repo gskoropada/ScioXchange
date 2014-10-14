@@ -6,7 +6,8 @@
  */
 
 if(isset($_SESSION['userid'])) {
-	$menu = " | <a href='dashboard.php'>Dashboard</a>";
+	$menu = " | <strong><a href='ask.php'>Ask a question!</a></strong>";
+	$menu .= " | <a href='dashboard.php'>Dashboard</a>";
 	if ($_SESSION['role']==1 || $_SESSION['role']==2){
 		$menu .= " | <a href='admin.php'>Administration</a>";
 	}
