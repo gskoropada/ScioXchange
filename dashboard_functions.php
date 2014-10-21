@@ -19,7 +19,7 @@ if(isset($_REQUEST['action'])) {
 function getQuestionCount($id) {
 	global $con;
 	
-	$query = "SELECT count(question_id) as qCount from question where author=".$_SESSION["userid"];
+	$query = "SELECT count(question_id) as qCount from question where author=".$id;
 	
 	$result = mysqli_query($con, $query);
 	
@@ -37,7 +37,7 @@ function getAnswersCount($id) {
 	global $con;
 	
 	$query = "select count(answer_id) as aCount from answer where question in (
-				select question_id from question where author=".$_SESSION['userid'].")";
+				select question_id from question where author=".$id.")";
 	
 	$result = mysqli_query($con,$query);
 	

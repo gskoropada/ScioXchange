@@ -22,7 +22,7 @@ if(isset($_POST['get_notifications'])) {
 	}
 }
 
-if(isset($_POST['ack'])) {
+if(isset($_POST['ack'])) { //Acknowled the unread notifications.
 	if($_POST['ack']==1) {
 		ackNotifications();
 	}
@@ -38,6 +38,13 @@ if(isset($_POST['count'])) {
 	}
 }
 
+/*
+ * Creates a notification entry according to the following parameters:
+ * $origin: ID of the object originating the notification
+ * $type: type of the object generating the notifcations. Possible values: NOT_ORI_QUESTION or NOT_ORI_ANSWER
+ * $not_type: type of notification generating event. Possible values: NOT_TYPE_ANS_RECEIVED, NOT_TYPE_COMM_RECEIVED, NOT_TYPE_VOTE_RECEIVED
+ * $parent: ID of the object that would be linked when the notification is displayed.
+ */
 function notify($origin, $type ,$not_type, $parent) {
 	require "connect.php";
 	$usr = getUser($origin, $type);
@@ -58,6 +65,7 @@ function notify($origin, $type ,$not_type, $parent) {
 	}
 }
 
+// Returns the author for a given origin object of the specified type
 function getUser($origin, $type) {
 	require "connect.php";
 	switch($type) {
@@ -80,6 +88,7 @@ function getUser($origin, $type) {
 	}
 }
 
+// Returns the number of unread notification a user has.
 function hasNotifications($user) {
 	require "connect.php";
 	$query = "SELECT count(not_id) FROM notification WHERE user = $user and status=0";
@@ -94,6 +103,7 @@ function hasNotifications($user) {
 	}	
 }
 
+// Returns notifications to the client encoded in a JSON object.
 function fetchNotifications() {
 	require "connect.php";
 	require "session.php";
@@ -112,11 +122,13 @@ function fetchNotifications() {
 	}
 }
 
+// Acknowledges unread notifications.
 function ackNotifications() {
 	require "connect.php";
 	require "session.php";
 	if(isset($_SESSION['userid'])) {
 		$query = "UPDATE notification SET status = 1 WHERE user=".$_SESSION['userid']." AND timestamp < '".date("c")."' AND NOT status";
+		// the timestamp field is used to filter notifications that may have been created after the query was sent to the server.
 		$result = mysqli_query($con, $query);
 		if(!$result) {
 			echo mysqli_error($con);
@@ -127,6 +139,7 @@ function ackNotifications() {
 	}
 }
 
+// Updates the user reputation. Included in this file as notification generating events are also reputation changing events.
 function updateReputation($user) {
 	global $con;
 	$query = "select (count(answer_id)+(sum(positive_votes) - sum(negative_votes))*2)/2 as reputation from answer where author = $user;";

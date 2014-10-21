@@ -2,7 +2,7 @@ $(function() {
 	
 	var id;
 	
-	$.ajax({
+	$.ajax({ //Asks the server for the logged in user id.
 		url: "dashboard_functions.php",
 		type: "POST",
 		data: {
@@ -10,7 +10,7 @@ $(function() {
 		},
 		success: function(data) {
 			id = parseInt(data);
-			$.ajax({
+			$.ajax({ //Asks the server for the question count for the logged in user
 				type: "POST",
 				url: "dashboard_functions.php",
 				data: {
@@ -22,7 +22,7 @@ $(function() {
 				}
 			});
 			
-			$.ajax({
+			$.ajax({ //Asks the server for the answer count for the logged in user
 				type: "POST",
 				url: "dashboard_functions.php",
 				data: {
@@ -34,7 +34,7 @@ $(function() {
 				}
 			});
 			
-			$.ajax({
+			$.ajax({ //Requests questions from the logged in user
 				type: "POST",
 				url: "questions_backend.php",
 				data: {

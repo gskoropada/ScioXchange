@@ -37,7 +37,9 @@ function login() {
 //Displays the login dialog.
 function loginDialog() {
 	$("body").append("<div id='overlay'></div>")
-		.append("<script src='scripts/form_validation.js' class='temp_script'></script>");
+		.append("<script src='scripts/form_validation.js' class='temp_script'></script>")
+		//The next line handles the Enter key press.
+		.append("<script class='temp_script'>$(document).keypress(function(e) {if(e.which == 13) {login();}});</script>");
 	
 	$("#overlay").addClass("overlay");
 	$("#overlay").append("<div id='loginDialog'></div>");

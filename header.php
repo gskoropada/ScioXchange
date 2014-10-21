@@ -14,7 +14,7 @@ if((!isset($_SESSION['userid'])) && indexRedirect()) {
 
 <div id="header">
 <div id="logo">
-	<h1><a href="index.php">ScioXchange</a></h1>
+	<h1><a href="index.php">Scio Exchange</a></h1>
 	<p>Your source of all knowledge</p>
 </div>
 <div id="status">
@@ -45,9 +45,12 @@ if(!isset($_SESSION['userid'])){
 	echo "<div><a href='account.php'>".$_SESSION['screenname']."</a>";
 	echo " | <a href='logout.php'>Logout</a></p></div>";
 	if($_SESSION['pwdRst']==1) {
-		echo $_SESSION['pwdRst'];
 		echo "<p>You must change your password now!</p>";
 	}
+	if($_SESSION['active']!=1) {
+		echo "<p>You must activate your account!</p>";
+	}
+		
 }
 ?>
 </div>
