@@ -4,6 +4,8 @@
  * Provides user registartion functionality.
  */
 
+require_once "scripts/passwordLib.php";
+
 //Variables for html_start.php
 $title = "Scio Exchange - Registration";
 $styles = ["main.css", "header.css"];

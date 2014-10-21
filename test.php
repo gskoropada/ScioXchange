@@ -1,6 +1,6 @@
 <?php
 
-$message = file_get_contents("forms/activation_email.php");
+$chat = popen("php c:\wamp\www\scioxchange\chat\chat_server.php","r");
 
-echo $message;
+echo $chat;
 ?>

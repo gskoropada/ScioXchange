@@ -36,12 +36,6 @@ function uploadPicture() {
 	$source = imagecreatefromjpeg($_FILES["pic"]["tmp_name"]);
 	$sourceWidth = getimagesize($_FILES["pic"]["tmp_name"])[0];
 	$sourceHeight = getimagesize($_FILES["pic"]["tmp_name"])[1];
-		
-	if($sourceWidth>$sourceHeight) {
-		$sourceWidth = $sourceHeight;
-	} else if ($sourceHeight > $sourceWidth) {
-		$sourceHeight = $sourceWidth;
-	}
 	
 	imagecopyresampled($pic, $source, 0, 0, 0, 0, 250, 250, $sourceWidth, $sourceHeight);
 	

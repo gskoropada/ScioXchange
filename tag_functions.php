@@ -1,5 +1,5 @@
 <?php
-require("connect.php");
+require "connect.php";
 
 switch($_REQUEST['action']) {
 	case "rt":
@@ -120,8 +120,10 @@ function fetchTags($tag_input) {
 		
 		for($i=1;$i<sizeof($usr_tags);$i++){
 			
-			if(!empty(trim($usr_tags[$i]))) {
-				$query .= "OR tag LIKE '".trim($usr_tags[$i])."%' ";
+			$tag = trim($usr_tags[i]);
+			
+			if(!empty($tag)) {
+				$query .= "OR tag LIKE '".$tag."%' ";
 			}
 		}
 				

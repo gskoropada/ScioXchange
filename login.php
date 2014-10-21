@@ -4,6 +4,8 @@
  * Provides back-end functionality for the login and password reset options.
  */
 
+require_once "scripts/passwordLib.php";
+
 //If an email has been passed, perform login process.
 if(isset($_POST['email'])) {
 	require("connect.php");

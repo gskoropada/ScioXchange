@@ -1,5 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `scioxchange` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `scioxchange`;
+
 -- MySQL dump 10.13  Distrib 5.6.13, for Win32 (x86)
 --
 -- Host: localhost    Database: scioxchange

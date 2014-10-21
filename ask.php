@@ -7,7 +7,7 @@ $scripts = ["ask.js"];
 include "html_start.php";
 include "header.php"; 
 
-require("forms\ask_form.php");
+require("forms/ask_form.php");
 
 require("html_end.php");
 ?>

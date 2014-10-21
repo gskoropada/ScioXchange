@@ -6,7 +6,7 @@ $scripts = ["question_functions.js", "dashboard.js"];
 
 require "html_start.php";
 require "header.php";
-require "forms\dashboard_form.php";
+require "forms/dashboard_form.php";
 
 
 require "html_end.php";
