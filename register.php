@@ -53,7 +53,7 @@ if(!empty($_POST)) {
 				if(!$result) {
 					echo "Could not write to the database - vk";
 				} else {
-					echo "User succesfully added";
+					echo "<script>location.assign('messages.php?mt=R');</script>";
 				}
 			} else {
 				echo "Error";
@@ -63,11 +63,15 @@ if(!empty($_POST)) {
 					mysqli_query($con, 
 					"SELECT validationkey from validation_key where UserId=".$usrid['UserID']));
 			
-			$link = "activate.php?ak=".$ak['validationkey'];
+			$link = "http://".$_SERVER['HTTP_HOST']."/activate.php?ak=".$ak['validationkey'];
 			
 			$message = actMessage($link, $ak[0]);
-				
-			@mail($_POST['email'], "User activation", actMessage($link, $ak[0])) or 
+			
+			$headers  = 'MIME-Version: 1.0' . "\r\n";
+			$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+			$headers .= 'From: ScioXchange <activation@scioxchange.com>' . "\r\n";
+			
+			@mail($_POST['email'], "User activation", actMessage($link, $ak[0]), $headers) or 
 				die ($message); //Send by e-mail or displays on screen. (email doesn't work on WAMP)
 			
 		}
@@ -82,11 +86,15 @@ require("html_end.php");
 //Function that generates the activation e-mail message.
 function actMessage($link, $vk) {
 	
-	$msg ="<h1>Scio Exchange</h1>
-	<h2>Your source of all knowledge</h2>
-	<p><strong>Congratulations!</strong> You have signed up to the best site on the Web</p>
-	<p>To activate your user follow <a href='" . $link . "'>this link</a></p>
-	<p>Your activation key is " . $vk ."</p>";
+	$msg ="<html>
+			<body>
+			<h1>Scio Exchange</h1>
+			<h2>Your source of all knowledge</h2>
+			<p><strong>Congratulations!</strong> You have signed up to the best site on the Web</p>
+			<p>To activate your user follow <a href='" . $link . "'>this link</a></p>
+			<p>Your activation key is " . $vk ."</p>
+			<p><br/><strong>ScioXchange Team</strong></p>
+			</body></html>";
 	
 	return $msg;
 }

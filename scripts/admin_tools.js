@@ -76,6 +76,31 @@ $(function() {
 		changePage(-1);
 	});
 	
+	$("#refresh").click(function() { //Refresh the page content
+		$.ajax({url:'fetch_user_list.php',
+			type: 'GET',
+			data: params,
+			dataType: 'json',
+			success:  function(data) {
+				console.log("Refresh");
+				updateUserList(data);
+			}
+			});
+		
+		$.ajax({url:'fetch_user_list.php',
+			type: 'GET',
+			data: {
+				"function": "count_users"
+			},
+			success:  function(data) {
+
+				userCount = data;
+				
+				$("#total_users").html(data);
+			}
+			});
+	});
+	
 	$("#select_all").click(function(){ //Selects all displayed users
 		
 		if($("#select_all").prop("checked")) {

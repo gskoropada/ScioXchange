@@ -6,6 +6,8 @@
  * $_SESSION['role'] Stores user role as defined in the Database
  * $_SESSION['avatar'] Stores a unique identifier refering to the User's picture located in profile_pics\
  * $_SESSION['pwdRst'] Flag indicating that the user must change the password because it has been recently reset;
+ * $_SESSION['active'] Flag indicating the activation status of the user
+ * $_SESSION['moderated'] Flag indicating the moderationg status of the user
  */
 $timeout = 3600; //Expressed in seconds
 

@@ -64,7 +64,7 @@ require("menu.php");
 function indexRedirect() {
 
 //Must not redirect for these pages.
-$pages = ["tag.php","login.php", "register.php", "activate.php","index.php","questions.php", "question.php"];
+require "redirect.ini";
 
 $redirect = true;
 	

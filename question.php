@@ -21,7 +21,9 @@ echo "<div class='question'><p class='qtitle'>".$question['question_title']."</p
 echo "<span class='qexcerpt'><p><pre>".$question['content']."</pre></p></span>";
 echo "<span class='qstats'>".date_format($d,"d-M-y");
 if(isset($_SESSION['userid'])) {
-	echo " | <span id='".$_GET['id']."' class='btnQComment click_option'>Leave a comment</span>";
+	if($_SESSION['active']) {
+		echo " | <span id='".$_GET['id']."' class='btnQComment click_option'>Leave a comment</span>";
+	}
 }
 echo "<span class='tags'>";
 $tags = explode(',' , $question['tags']);
@@ -36,7 +38,7 @@ echo "</div>";
 getAnswers($_GET['id'], false); 
 
 if(isset($_SESSION['userid'])) {
-	if(getUser($_GET['id'], NOT_ORI_QUESTION)!=$_SESSION['userid'] && !hasAnswered($_GET['id'])) {
+	if(getUser($_GET['id'], NOT_ORI_QUESTION)!=$_SESSION['userid'] && !hasAnswered($_GET['id']) && $_SESSION['active']) {
 		require("forms/reply_form.php");
 	}
 }

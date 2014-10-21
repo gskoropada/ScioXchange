@@ -5,7 +5,11 @@
 	<option name='50r' value='50'>50</option>
 </select>
 <p>Total users: <span id='total_users'></span></p>
-<p><span id='previous' class='click_option'><img src='images/back_arrow.png' class='icon' title='Previous' /></span><span id='next' class='click_option'><img src='images/forward_arrow.png' class='icon' title='Next' /></span></p>
+<p>
+<span id='previous' class='click_option'><img src='images/back_arrow.png' class='icon' title='Previous' /></span>
+<span id='next' class='click_option'><img src='images/forward_arrow.png' class='icon' title='Next' /></span>
+<span id='refresh' class='click_option'><img src='images/refresh.png' class='icon' title='Refresh' /></span>
+</p>
 <select id='bulk_action'>
 	<option value=''>Bulk actions...</option>
 	<option value='bd'>Delete</option>

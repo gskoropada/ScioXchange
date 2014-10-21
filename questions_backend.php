@@ -28,10 +28,6 @@ function listQuestions($slider) {
 	on question_id = question
 	INNER JOIN user on question.author = UserID
 	ORDER BY timestamp DESC ";
-
-	if($slider) {
-		$query .= "LIMIT 5";
-	}
 	
 	$result = mysqli_query($con, $query);
  
@@ -79,9 +75,6 @@ function getAnswers($id, $slider) {
 	global $con;
 
 	$sql = "SELECT answer_id, author, content, (positive_votes-negative_votes) as rating, screenName, timestamp FROM answer INNER JOIN user on author = UserID WHERE question = $id ORDER BY rating DESC";
-	if($slider) {
-		$sql .= " LIMIT 2";
-	}
 	
 	$result = mysqli_query($con, $sql);
 
@@ -97,14 +90,16 @@ function getAnswers($id, $slider) {
 		echo "'>".$answers['rating']."</span>";
 		echo "<div class='astats'>".date_format(new DateTime($answers['timestamp']), "d-M-y");
 		if(isset($_SESSION['userid'])) {
-			echo " | <span id='".$answers['answer_id']."' class='click_option btnAComment'>Leave a comment</span>";
-			if(checkVote($answers['answer_id'])) {
-				if($_SESSION['userid'] != $answers['author']) {
-					echo " | <span id='".$answers['answer_id']."' class='click_option thumb_up'>Thumbs Up</span>";
-					echo " | <span id='".$answers['answer_id']."' class='click_option thumb_down'>Thumbs down</span>";
+			if($_SESSION['active']){
+				echo " | <span id='".$answers['answer_id']."' class='click_option btnAComment'>Leave a comment</span>";
+				if(checkVote($answers['answer_id'])) {
+					if($_SESSION['userid'] != $answers['author']) {
+						echo " | <span id='".$answers['answer_id']."' class='click_option thumb_up'>Thumbs Up</span>";
+						echo " | <span id='".$answers['answer_id']."' class='click_option thumb_down'>Thumbs down</span>";
+					}
+				} else {
+					echo " | Already voted.";
 				}
-			} else {
-				echo " | Already voted.";
 			}
 		}
 		echo "</div>";

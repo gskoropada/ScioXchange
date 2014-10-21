@@ -11,6 +11,7 @@ $styles = ["main.css", "header.css"];
 
 require("html_start.php");
 require('header.php');
+require "scripts/passwordLib.php";
 
 //Checks if an activation key has been passd through the GET method, if not, displays a 
 // form asking for that information.
@@ -60,7 +61,7 @@ if(isset($_GET['ak']) && isset($_POST['pwd'])) {
 	} else {
 		$row = mysqli_fetch_array($result);
 		
-		if($row['pwd']==$_POST['pwd']) {
+		if(password_verify($_POST['pwd'], $row['pwd'])) {
 			
 			$query = "UPDATE user 
 					SET active = 1
@@ -83,7 +84,9 @@ if(isset($_GET['ak']) && isset($_POST['pwd'])) {
 				var_dump($result1);
 			} else {
 				echo "User Activated";
-			}
+			} 
+			} else {
+				echo "Wrong Password";
 			
 			$con -> close();
 		}

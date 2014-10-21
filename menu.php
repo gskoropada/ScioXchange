@@ -6,12 +6,14 @@
  */
 
 if(isset($_SESSION['userid'])) {
-	$menu = " | <strong><a href='ask.php'>Ask a question!</a></strong>";
-	$menu .= " | <a href='dashboard.php'>Dashboard</a>";
-	if ($_SESSION['role']==1 || $_SESSION['role']==2){
-		$menu .= " | <a href='admin.php'>Administration</a>";
+	if($_SESSION['active']==1) {
+		$menu = " | <strong><a href='ask.php'>Ask a question!</a></strong>";
+		$menu .= " | <a href='dashboard.php'>Dashboard</a>";
+		if ($_SESSION['role']==1 || $_SESSION['role']==2){
+			$menu .= " | <a href='admin.php'>Administration</a>";
+		}
+		echo $menu;
 	}
-	echo $menu;
 }
 
 ?>
