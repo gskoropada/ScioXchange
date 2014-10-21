@@ -6,6 +6,6 @@
 </div>
 <div id="usrQuestions">
 	<div id="dashOptions">
-	<p>Questions | Answers</p>
+	<p>Questions | Answers | <a href="inbox.php" >Inbox</a> </p>
 	</div>
 </div>

@@ -1,0 +1,66 @@
+@CHARSET "ISO-8859-1";
+
+#inbox_list {
+	width: 30%;
+	height: 100%;
+	float: left;
+}
+
+#inbox_preview {
+	width: 69%;
+	height: 100%;
+	float: right;
+	border-left: 1px dotted #888;
+}
+
+#inbox_menu {
+	width:100%;
+	height: 30px;
+	border-bottom: 1px dotted #888;
+}
+
+.msg_short {
+	padding: 3px;
+}
+
+.msg_short > .msg_from {
+	font-size: 0.8em;
+}
+
+.msg_short > .msg_subject {
+	display: block;
+}
+
+.msg_short > .msg_date {
+	font-size: 0.8em;
+	float: right;
+}
+
+.alt_row {
+	background-color: rgb(220,220,220);
+}
+
+#msg_header > .msg_subject {
+	display: block;
+	font-size: 1.3em;
+}
+
+#msg_header > .msg_from {
+	font-size: 0.9em;
+}
+
+#msg_header > .msg_date {
+	float: right;
+	font-size: 0.9em;
+}
+
+#msg_header {
+	background-color: rgb(230,230,230);
+	padding: 3px;
+}
+
+.msg_content {
+	font-family: sans-serif;
+	padding-left: 10px;
+	padding-right: 5px;
+}
