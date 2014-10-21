@@ -79,3 +79,29 @@
 .not_read > a:link, .not_read > a:visited {
 	color: rgb(0,200,0);
 }
+
+a:link, a:visited {
+	color: #888;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #ccc;
+}
+
+.not_active > a {
+	color: red;
+}
+
+.not_active {
+	color: red;
+	background-color: rgba(255,255,0,0.5);
+}
+
+#status .click_option {
+	color: #888;
+}
+
+#status .click_option:hover {
+	color: #ccc;
+}

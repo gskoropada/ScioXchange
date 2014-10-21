@@ -15,7 +15,7 @@ if(isset($_POST['email'])) {
 		pwdReset();
 	} else {
 	
-	$query = "SELECT pwd, userid, screenname, role, avatar, pwdChange, active, moderated FROM user WHERE email='".$_POST['email']."'";
+	$query = "SELECT pwd, userid, screenname, role, avatar, pwdChange, active, moderated, reputation FROM user WHERE email='".$_POST['email']."'";
 
 	$result = mysqli_query($con, $query);
 	
@@ -34,6 +34,7 @@ if(isset($_POST['email'])) {
 			$_SESSION['pwdRst']=$usr['pwdChange'];
 			$_SESSION['active']=$usr['active'];
 			$_SESSION['moderated']=$usr['moderated'];
+			$_SESSION['reputation']=$usr['reputation'];
 			
 			echo 1;
 		} else {

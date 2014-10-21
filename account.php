@@ -20,7 +20,7 @@ require('header.php');
 //Checks if a session has been started before proceeding.
 if(isset($_SESSION['userid'])) {
 	require("forms/profile_pic_form.php");
-	echo "<h2>".$_SESSION['screenname']."</h2>";
+	echo "<h2>".$_SESSION['screenname']."(".$_SESSION['reputation'].")</h2>";
 	require("connect.php");
 	
 	$query = "SELECT active, moderated FROM user WHERE userid=".$_SESSION['userid'];

@@ -42,13 +42,14 @@ if(!isset($_SESSION['userid'])){
 	
 	echo "<span id='not_counter' class='click_option'>$nots</span>";
 	
-	echo "<div><a href='account.php'>".$_SESSION['screenname']."</a>";
+	echo "<div ";
+	if(!$_SESSION['active']) {
+		echo " class='not_active' title='User not active'";
+	}
+	echo "><a href='account.php'>".$_SESSION['screenname']."(".$_SESSION['reputation'].")</a>";
 	echo " | <a href='logout.php'>Logout</a></p></div>";
 	if($_SESSION['pwdRst']==1) {
 		echo "<p>You must change your password now!</p>";
-	}
-	if($_SESSION['active']!=1) {
-		echo "<p>You must activate your account!</p>";
 	}
 		
 }
