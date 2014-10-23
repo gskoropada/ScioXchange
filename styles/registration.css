@@ -1,0 +1,48 @@
+@CHARSET "ISO-8859-1";
+
+#wrapper_reg {
+	width: 72%;
+	margin: auto;
+}
+
+#reg_form {
+	width: 35%;
+	float: left;
+}
+
+#reg_validation_msg {
+	float: left;
+	width: 35%;
+	min-height: 100px;
+	padding: 10px;
+	font-size: 0.75em;
+	color: red;
+}
+
+#reg_validation_msg > span {
+	display: block;
+	padding-bottom: 3px;
+}
+
+label {
+	display: block;
+}
+
+textarea {
+	background-color: rgba(200,200,200,0.6);
+	width: 100%;
+	border: none;
+	min-height: 5em;
+}
+
+input {
+	background-color: rgba(200,200,200,0.6);
+	width: 100%;
+	border: none;
+}
+
+.invalid {
+	color: red;
+	background-color: rgba(255,0,0,0.2);
+	border: 2px solid red;
+}

@@ -5,7 +5,7 @@ $(function(){
 });
 
 function updateMsgList() {
-
+	
 	$.ajax({
 		type: 'POST',
 		url: 'inbox_functions.php',
@@ -16,7 +16,7 @@ function updateMsgList() {
 			var list = JSON.parse(data);
 			var i = 0;
 			var id = 0;
-			
+			var d;
 			$("#msg_list").html("");
 			while(i<list.length){
 				id = list[i].mid;
@@ -27,14 +27,19 @@ function updateMsgList() {
 				$("#"+id).append("<span class='msg_date'>"+d.toLocaleDateString()+"</span>");
 				
 				if(list[i].reply_to != null) {
+					d = new Date(list[i].rt_timestamp);
 					$("#"+id).append("<div id='r_"+list[i].mid+"' class='msg_reply click_option'></div>");
 					$("#r_"+id).append("<img src='images/reply_icon.png'>");
 					$("#r_"+id).append("<span class='reply_from'>"+list[i].rt_screenName+"</span>");
-					$("#r_"+id).append("<span class='reply_date'>"+list[i].rt_timestamp+"</span>");
+					$("#r_"+id).append("<span class='reply_date'>"+d.toLocaleDateString()+"</span>");
 				}
 				
 				if(i%2!=0) { 
 					$("#"+id).addClass("alt_row");
+				}
+				
+				if(list[i].r == 0) {
+					$("#"+id).addClass("msg_unread");
 				}
 				
 				$("#"+id).click(function() {
@@ -68,7 +73,7 @@ function showMessage(id) {
 		}
 	});
 	
-	if($(this).hasClass("msg_unread")) {		
+	if($("#"+id).hasClass("msg_unread")) {		
 		$.ajax({
 			type: 'POST',
 			url: 'inbox_functions.php',

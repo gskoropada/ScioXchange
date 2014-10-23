@@ -59,6 +59,7 @@ body {
 
 .dialog > label {
 	display: inline-block;
+	width: 18%;
 }
 
 .msg_area {
@@ -98,3 +99,4 @@ body {
 	margin: 0px;
 	
 }
+

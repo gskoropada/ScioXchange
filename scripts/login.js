@@ -53,6 +53,8 @@ function loginDialog() {
 
 	$("#msgArea").css("width","200px");
 	
+	$("#inLogEmail").focus();
+	
 	$("#btnLogin").click(function(){
 		login();
 	});

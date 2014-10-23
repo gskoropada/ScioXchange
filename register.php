@@ -8,13 +8,16 @@ require_once "scripts/passwordLib.php";
 
 //Variables for html_start.php
 $title = "Scio Exchange - Registration";
-$styles = ["main.css", "header.css"];
+$styles = ["main.css", "header.css","registration.css"];
 $scripts = [ "registration_form.js", "form_validation.js"];
 
 require('html_start.php');
 require('header.php');
-require('forms/registration_form.htm');
-
+if(isset($_SESSION['userid'])) {
+	echo "You are already registered!";
+} else {
+	require('forms/registration_form.htm');
+}
 //Checks if data is passed to continue with the registration process.
 if(!empty($_POST)) {
 	require('connect.php');

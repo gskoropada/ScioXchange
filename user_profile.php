@@ -10,7 +10,11 @@ require "user_profile_functions.php";
 ?>
 <h1><?php screenNameFromUserID($_GET['id']); ?></h1>
 <?php
-echo "<p><a href = message.php?id=" . $_GET['id'] .">send message</a></p>"
+if($_SESSION['userid'] == $_GET['id']) {
+	echo "<p>This is how other people see your profile</p>";
+} else {
+	echo "<p><a href = message.php?id=" . $_GET['id'] .">send message</a></p>";
+}
 ?>
 <div id="usrStats">
 	<p><?php screenNameFromUserID($_GET['id']); ?> has asked <?php getQuestionCount($_GET['id']); ?> questions.</p>

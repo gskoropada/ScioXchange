@@ -17,6 +17,20 @@
 	margin: 0px;
 }
 
+.ans_comment > textarea, .q_comment > textarea {
+	width: 96%;
+	margin-left: 2%;
+	background-color: #f9f9f9;
+	padding: 5px;
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+
+.ans_comment > .click_option, .q_comment > .click_option {
+	margin-left: 5px;
+	padding: 3px;
+}
+
 .question {
 	position: relative;
 	width: 95%;

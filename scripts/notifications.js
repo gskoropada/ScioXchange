@@ -32,6 +32,9 @@ function showNotifications(notifications) {
 		case "1":
 			link = "question.php?id="+target+"#ans_"+origin;
 			break;
+		case "2":
+			link = "inbox.php";
+			break;
 		}
 		switch(nots_JSON[i].not_type){
 		case "0":
@@ -47,6 +50,9 @@ function showNotifications(notifications) {
 			break;
 		case "2":
 			msg = "Your answer has received a vote!";
+			break;
+		case "3":
+			msg = "Someone sent you a message!";
 			break;
 		}
 		if(status == 1) {

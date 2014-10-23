@@ -4,17 +4,22 @@
  * $type = Type of the object generating the notification:
  * 			0 -> Question
  * 			1 -> Answer
+ * 			2 -> Message
  * $not_type = Type of the event that generated the notification:
  * 			0 -> Answer received
  * 			1 -> Comment received
  * 			2 -> Vote received 
+ * 			3 -> Message received
  */
 
 define("NOT_ORI_QUESTION", 0);
 define("NOT_ORI_ANSWER",1);
+define("NOT_ORI_MSG",2);
+
 define("NOT_TYPE_ANS_RECEIVED", 0);
 define("NOT_TYPE_COMM_RECEIVED", 1);
 define("NOT_TYPE_VOTE_RECEIVED", 2);
+define("NOT_TYPE_MSG_RECEIVED", 3);
 
 if(isset($_POST['get_notifications'])) {
 	if($_POST['get_notifications'] == 1) {
@@ -57,11 +62,9 @@ function notify($origin, $type ,$not_type, $parent) {
 	}
 	
 	if($type == NOT_ORI_ANSWER && $not_type == NOT_TYPE_VOTE_RECEIVED) {
-		echo "Rep update - vote received";
 		updateReputation(getUser($origin, $type));
 	} else if ($type == NOT_ORI_QUESTION && $not_type == NOT_TYPE_ANS_RECEIVED) {
 		updateReputation($_SESSION['userid']);
-		echo "Rep update - answered question";
 	}
 }
 
@@ -74,6 +77,9 @@ function getUser($origin, $type) {
 			break;
 		case NOT_ORI_ANSWER: //Answer
 			$query = "SELECT author FROM answer WHERE answer_id = $origin";
+			break;
+		case NOT_ORI_MSG: //Message
+			$query = "SELECT recipient FROM message_recipient WHERE message_id = $origin";
 			break;
 	}
 	
