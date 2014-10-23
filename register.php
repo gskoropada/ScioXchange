@@ -79,7 +79,8 @@ if(!empty($_POST)) {
 			
 			sendMessage($msgJSON);
 			
-			//echo "<script>location.assign('messages.php?mt=R');</script>";
+			//Shows an end of process message to the user.
+			echo "<script>location.assign('messages.php?mt=R');</script>";
 		}
 	}
 	

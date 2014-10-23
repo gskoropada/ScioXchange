@@ -1,14 +1,17 @@
+/*
+ * INBOX client side functions.
+ */
 $(function(){
 	var c;
-	if($(".sent_msgs").length > 0) {
+	if($(".sent_msgs").length > 0) { //Checks for the flag used by the server.
 		c = "mcs";
-		updateMsgList("fls");
+		updateMsgList("fls"); //Get sent messages.
 	} else {
 		c = "mc";
-		updateMsgList("fl");
+		updateMsgList("fl"); //Get received messages.
 	}
 	
-	$.ajax({
+	$.ajax({ //Count unread messages and display
 		type: 'POST',
 		url: 'inbox_functions.php',
 		data: {
@@ -23,7 +26,7 @@ $(function(){
 	
 	
 	
-	$.ajax({
+	$.ajax({ //Count total messages and display
 		type: 'POST',
 		url: 'inbox_functions.php',
 		data: {
@@ -38,7 +41,7 @@ $(function(){
 	
 });
 
-function updateMsgList(action) {
+function updateMsgList(action) { //Updates the message list displayed in the inbox.
 	
 	$.ajax({
 		type: 'POST',
@@ -92,7 +95,7 @@ function updateMsgList(action) {
 	});
 }
 
-function showMessage(id) {
+function showMessage(id) { //Displays a message on the preview pane and marks it as read
 	
 	$(".msg_highlight").removeClass("msg_highlight");
 	$("#"+id).addClass("msg_highlight");

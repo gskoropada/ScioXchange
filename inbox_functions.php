@@ -28,7 +28,7 @@ if(isset($_POST['action'])) {
 	}
 }
 
-function showMessage($id) {
+function showMessage($id) { //Sends the data for a specific message to the client.
 	global $con;
 	
 	$query = "SELECT message.message_id as mid, subject, content, recipient, message_recipient.read as r, timestamp, sent_by, user.screenName, r_user.screenName as r_screenName
@@ -46,7 +46,7 @@ function showMessage($id) {
 	}
 }
 
-function fetchMsgList($sent) {
+function fetchMsgList($sent) { //Sends the complete list of messages to the client.
 	global $con;
 	
 	if($sent) {
@@ -80,7 +80,7 @@ function fetchMsgList($sent) {
 	}
 }
 
-function markRead($id) {
+function markRead($id) { //Marks a specific message as read.
 	global $con;
 	
 	$query = "UPDATE message_recipient SET message_recipient.read=1 WHERE message_id=$id AND recipient=".$_SESSION['userid'];
@@ -94,7 +94,7 @@ function markRead($id) {
 	}
 }
 
-function getMessageCount($id, $scope) {
+function getMessageCount($id, $scope) { //Sends the requested count to the client.
 	global $con;
 	
 	switch($scope) {

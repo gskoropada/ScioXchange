@@ -2,7 +2,7 @@
 require "connect.php";
 
 if(!function_exists("notify")) {
-	require "notify.php";
+	require "notify.php"; // Required to notify recipients of new messages.
 }
 
 if(isset($_POST['action'])) {
@@ -13,6 +13,9 @@ if(isset($_POST['action'])) {
 	}
 }
 
+/*
+ * Escapes special characters on a String. Retuns a escaped String.
+ */
 function escape_characters($str) {
 	$chars = [["\\",'\\\\'],["\"",'\\\"'],["\/",'\\\/'],["\n",'\\\n'],["\r",'\\\r'],["\b",'\\\b'],["\t",'\\\t'],["\f",'\\\f']];
 
@@ -25,6 +28,14 @@ function escape_characters($str) {
 	return $str_ret;
 }
 
+/*
+ * Sends a message according to the data in the JSON string.
+ * Message fields:
+ * 		to: ID of the recipient
+ * 		from: ID of the sender
+ * 		subject: Message subject. Special characters should be escaped.
+ * 		Content: Message content. Special characters should be escaped.
+ */
 function sendMessage($msgJSON) {
 	global $con;
 	
