@@ -45,10 +45,10 @@ function loginDialog() {
 	$("#overlay").append("<div id='loginDialog'></div>");
 	$("#loginDialog").addClass("dialog").css("width", "500px")
 		.append("<span id='msgArea' class='msg_area'></span>")
-		.append("<label>Email: </label><input type='text' name='email' id='inLogEmail'><br>")
-		.append("<label>Password: </label><input type='password' name='pwd' id='inLogPwd'><br>")
+		.append("<label class='login_label'>Email: </label><input class='login_input' type='text' name='email' id='inLogEmail'><br>")
+		.append("<label class='login_label'>Password: </label><input class='login_input' type='password' name='pwd' id='inLogPwd'><br>")
 		.append("<p><span id='pwdRst' class='click_option'>Reset password</span></p>")
-		.append("<input type='button' value='Login' id='btnLogin' disabled='true'>")
+		.append("<button id='btnLogin' disabled='true'>Login</button>")
 		.append("<img src='images/close_icon.png' onclick='$(\"#overlay\").remove(); $(\".temp_script\").remove();' class='icon click_option window_icon' />");
 
 	$("#msgArea").css("width","200px");

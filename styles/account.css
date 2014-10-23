@@ -10,3 +10,7 @@
 	float: right;
 	width: 250px;
 }
+
+label {
+	display: block;
+}

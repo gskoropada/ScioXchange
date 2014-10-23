@@ -5,6 +5,7 @@
  */
 
 require_once "scripts/passwordLib.php";
+require "msg_functions.php";
 
 //Variables for html_start.php
 $title = "Scio Exchange - Registration";
@@ -55,8 +56,6 @@ if(!empty($_POST)) {
 				
 				if(!$result) {
 					echo "Could not write to the database - vk";
-				} else {
-					echo "<script>location.assign('messages.php?mt=R');</script>";
 				}
 			} else {
 				echo "Error";
@@ -74,9 +73,13 @@ if(!empty($_POST)) {
 			$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 			$headers .= 'From: ScioXchange <activation@scioxchange.com>' . "\r\n";
 			
-			@mail($_POST['email'], "User activation", actMessage($link, $ak[0]), $headers) or 
-				die ($message); //Send by e-mail or displays on screen. (email doesn't work on WAMP)
+			@mail($_POST['email'], "User activation", actMessage($link, $ak[0]), $headers);
 			
+			$msgJSON = "{\"to\":".$usrid['UserID'].",\"from\":58,\"subject\":\"Welcome to Scio Exchange!\",\"content\":\"".escape_characters("Check your email for the activation email and start enjoying the site!\nThe Scio Exchange Team")."\" }";
+			
+			sendMessage($msgJSON);
+			
+			//echo "<script>location.assign('messages.php?mt=R');</script>";
 		}
 	}
 	

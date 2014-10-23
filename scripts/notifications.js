@@ -33,7 +33,7 @@ function showNotifications(notifications) {
 			link = "question.php?id="+target+"#ans_"+origin;
 			break;
 		case "2":
-			link = "inbox.php";
+			link = "inbox.php?goto="+target;
 			break;
 		}
 		switch(nots_JSON[i].not_type){

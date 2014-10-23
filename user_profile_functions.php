@@ -50,4 +50,22 @@ function screenNameFromUserID($id) {
 		echo $screenName['screenName'];
 		}
 	}
+	
+function avatarFromUserID($id) {
+	global $con;
+
+	$query = "select avatar FROM user WHERE UserID = $id";
+	$result = mysqli_query($con,$query);
+
+	if(!$result) {
+		echo "DB Error";
+	} else {
+		$avatar =  mysqli_fetch_array($result);
+		if(file_exists("profile_pics/".$avatar['avatar'].".jpg")) {
+			echo $avatar['avatar'].".jpg";
+		} else {
+			echo "default.png";
+		}
+	}
+}
 ?>

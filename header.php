@@ -30,7 +30,9 @@ if(!isset($_SESSION['userid'])){
 	echo "<p><span class='click_option' onclick='pwdReset();'>Forgot your password?</span></p>";
 } else {
 	require "connect.php";
-	require "notify.php";
+	if(!function_exists("notify")) {
+		require "notify.php";
+	}
 	$nots = hasNotifications($_SESSION['userid']);
 	echo "<p><div class='avatar'><img id='avatar_thumb' src='profile_pics/thumbs/";
 	if(!file_exists("profile_pics/thumbs/".$_SESSION['avatar'].".jpg")) {

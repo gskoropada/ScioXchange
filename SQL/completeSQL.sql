@@ -1,4 +1,5 @@
-
+CREATE DATABASE  IF NOT EXISTS `scioxchange` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `scioxchange`;
 -- MySQL dump 10.13  Distrib 5.6.13, for Win32 (x86)
 --
 -- Host: localhost    Database: scioxchange
@@ -45,7 +46,7 @@ CREATE TABLE `answer` (
 
 LOCK TABLES `answer` WRITE;
 /*!40000 ALTER TABLE `answer` DISABLE KEYS */;
-INSERT INTO `answer` VALUES (21,54,'It seems to work',1,0,19,'2014-10-03 10:03:02'),(22,4,'Testing',1,0,21,'2014-10-03 11:18:47'),(23,4,'dafdf',1,0,21,'2014-10-03 11:20:10'),(24,4,'dafdf',1,0,21,'2014-10-03 11:26:53'),(25,4,'dafdf',1,0,21,'2014-10-03 11:27:16'),(26,4,'I don\'t know, you tell me...',1,0,22,'2014-10-03 11:32:47'),(27,4,'I don\'t know, you tell me...',0,1,22,'2014-10-03 11:32:53'),(28,4,'kjhaslkdfj\nasdfkjhalksdf\nasdkjhaskdfj\n',1,0,22,'2014-10-06 05:19:25'),(29,4,'I\'m just testing a new functionality',0,0,21,'2014-10-07 06:04:09'),(30,41,'I\'ll test it for you',2,0,25,'2014-10-14 02:32:11'),(31,54,'It hasn\'t worked so far...',2,0,25,'2014-10-14 02:37:57'),(32,41,'Just testing some functionalities...',0,0,22,'2014-10-14 02:45:41'),(33,41,'Testing a little more...',0,0,19,'2014-10-14 02:46:25'),(34,41,'And a little bit more testing...',1,0,20,'2014-10-14 02:52:45');
+INSERT INTO `answer` VALUES (21,54,'It seems to work',1,0,19,'2014-10-03 10:03:02'),(22,4,'Testing',1,0,21,'2014-10-03 11:18:47'),(23,4,'dafdf',1,0,21,'2014-10-03 11:20:10'),(24,4,'dafdf',1,0,21,'2014-10-03 11:26:53'),(25,4,'dafdf',1,0,21,'2014-10-03 11:27:16'),(26,4,'I don\'t know, you tell me...',1,0,22,'2014-10-03 11:32:47'),(27,4,'I don\'t know, you tell me...',0,1,22,'2014-10-03 11:32:53'),(28,4,'kjhaslkdfj\nasdfkjhalksdf\nasdkjhaskdfj\n',2,0,22,'2014-10-06 05:19:25'),(29,4,'I\'m just testing a new functionality',0,0,21,'2014-10-07 06:04:09'),(30,41,'I\'ll test it for you',2,0,25,'2014-10-14 02:32:11'),(31,54,'It hasn\'t worked so far...',2,0,25,'2014-10-14 02:37:57'),(32,41,'Just testing some functionalities...',0,1,22,'2014-10-14 02:45:41'),(33,41,'Testing a little more...',0,0,19,'2014-10-14 02:46:25'),(34,41,'And a little bit more testing...',1,0,20,'2014-10-14 02:52:45');
 /*!40000 ALTER TABLE `answer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -89,16 +90,17 @@ DROP TABLE IF EXISTS `message`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `message` (
   `message_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `from` int(10) unsigned NOT NULL,
+  `sent_by` int(10) unsigned NOT NULL,
   `subject` tinytext NOT NULL,
   `content` longtext NOT NULL,
-  `reply_to` int(10) unsigned NOT NULL,
+  `reply_to` int(10) unsigned DEFAULT NULL,
+  `timestamp` datetime DEFAULT NULL,
   PRIMARY KEY (`message_id`),
-  KEY `from` (`from`,`reply_to`),
+  KEY `from` (`sent_by`,`reply_to`),
   KEY `reply_to` (`reply_to`),
-  CONSTRAINT `message_ibfk_1` FOREIGN KEY (`from`) REFERENCES `user` (`UserID`),
+  CONSTRAINT `message_ibfk_1` FOREIGN KEY (`sent_by`) REFERENCES `user` (`UserID`),
   CONSTRAINT `message_ibfk_2` FOREIGN KEY (`reply_to`) REFERENCES `message` (`message_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -107,6 +109,7 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
+INSERT INTO `message` VALUES (2,54,'Testing','Testing',NULL,'2010-10-14 00:00:00'),(3,41,'More Testing','1, 2, 3... Testing',2,'2010-10-08 00:00:00'),(4,44,'Alt row','I\'m testing the alterntive row background color',3,'2010-10-12 00:00:00'),(27,4,'Testing','Testing again...',NULL,'2014-10-22 23:57:18'),(28,4,'Testing','More testing of the send message',NULL,'2014-10-22 23:59:04'),(29,4,'I\'m testing the messages','Just let me know if this works.',NULL,'2014-10-23 00:40:12'),(30,54,'i\'m just testing this a little more','I haven\'t tried everything yet.\r\nYou let me know how it goes.\r\n\r\nCheers.\r\n\r\nSarah',NULL,'2014-10-23 00:42:06'),(31,4,'Testing the notifications.','I\'m testing the notifications. Did you receive one?',NULL,'2014-10-23 01:08:22'),(32,54,'1,2,3 testing...','More and more testing',NULL,'2014-10-23 01:14:11'),(33,4,'Testing notification links','When clicking on the notification text it should take you to the actual message received...',NULL,'2014-10-23 06:04:36'),(34,58,'Welcome to Scio Exchange!','Testing msg send',NULL,'2014-10-23 10:22:08'),(35,58,'Welcome to Scio Exchange!','Testing msg send',NULL,'2014-10-23 10:22:53'),(36,58,'Welcome to Scio Exchange!','Check your email for the activation email and start enjoying the site!\\nThe Scio Exchange Team',NULL,'2014-10-23 11:17:23');
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -118,12 +121,12 @@ DROP TABLE IF EXISTS `message_recipient`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `message_recipient` (
-  `mesage_id` int(10) unsigned NOT NULL,
+  `message_id` int(10) unsigned NOT NULL,
   `recipient` int(10) unsigned NOT NULL,
-  `read` bit(2) NOT NULL,
-  PRIMARY KEY (`mesage_id`,`recipient`),
+  `read` bit(2) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`message_id`,`recipient`),
   KEY `recipient` (`recipient`),
-  CONSTRAINT `message_recipient_ibfk_1` FOREIGN KEY (`mesage_id`) REFERENCES `message` (`message_id`),
+  CONSTRAINT `message_recipient_ibfk_1` FOREIGN KEY (`message_id`) REFERENCES `message` (`message_id`),
   CONSTRAINT `message_recipient_ibfk_2` FOREIGN KEY (`recipient`) REFERENCES `user` (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -134,6 +137,7 @@ CREATE TABLE `message_recipient` (
 
 LOCK TABLES `message_recipient` WRITE;
 /*!40000 ALTER TABLE `message_recipient` DISABLE KEYS */;
+INSERT INTO `message_recipient` VALUES (2,4,''),(3,4,''),(4,4,''),(27,4,''),(28,54,''),(29,54,''),(30,4,''),(31,54,''),(32,4,''),(33,54,''),(34,4,''),(35,4,''),(36,64,'');
 /*!40000 ALTER TABLE `message_recipient` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -183,7 +187,7 @@ CREATE TABLE `notification` (
   PRIMARY KEY (`not_id`),
   KEY `fk_not_user_idx` (`user`),
   CONSTRAINT `fk_not_user` FOREIGN KEY (`user`) REFERENCES `user` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,7 +196,7 @@ CREATE TABLE `notification` (
 
 LOCK TABLES `notification` WRITE;
 /*!40000 ALTER TABLE `notification` DISABLE KEYS */;
-INSERT INTO `notification` VALUES (15,54,2,21,1,'2014-10-03 10:04:42','',19),(16,54,1,21,0,'2014-10-03 10:10:17','',21),(17,4,1,20,0,'2014-10-03 10:11:54','',20),(18,54,0,21,0,'2014-10-03 11:27:16','',25),(19,4,2,25,1,'2014-10-03 11:28:54','',21),(20,4,2,23,1,'2014-10-03 11:28:58','',21),(21,4,2,22,1,'2014-10-03 11:29:00','',21),(22,4,2,24,1,'2014-10-03 11:29:03','',21),(23,54,0,22,0,'2014-10-03 11:32:48','',26),(24,54,0,22,0,'2014-10-03 11:32:53','',27),(25,4,2,26,1,'2014-10-03 11:33:59','',22),(26,4,2,27,1,'2014-10-03 11:34:06','',22),(27,4,1,23,1,'2014-10-04 02:21:56','',21),(28,54,1,22,0,'2014-10-06 04:48:20','',22),(29,54,0,22,0,'2014-10-06 05:19:25','',28),(30,4,2,28,1,'2014-10-06 05:19:46','',22),(31,54,0,21,0,'2014-10-07 06:04:09','',29),(32,4,1,24,0,'2014-10-07 08:15:32','',24),(33,54,1,22,0,'2014-10-07 08:22:41','',22),(34,4,0,25,0,'2014-10-14 02:32:11','',30),(35,41,2,30,1,'2014-10-14 02:34:00','',25),(36,41,2,30,1,'2014-10-14 02:36:43','',25),(37,4,0,25,0,'2014-10-14 02:37:57','',31),(38,54,2,31,1,'2014-10-14 02:39:23','\0',25),(39,54,2,31,1,'2014-10-14 02:44:59','\0',25),(40,54,0,22,0,'2014-10-14 02:45:41','\0',32),(41,4,0,19,0,'2014-10-14 02:46:25','',33),(42,4,0,20,0,'2014-10-14 02:52:45','',34),(43,41,2,34,1,'2014-10-14 02:53:32','\0',20);
+INSERT INTO `notification` VALUES (15,54,2,21,1,'2014-10-03 10:04:42','',19),(16,54,1,21,0,'2014-10-03 10:10:17','',21),(17,4,1,20,0,'2014-10-03 10:11:54','',20),(18,54,0,21,0,'2014-10-03 11:27:16','',25),(19,4,2,25,1,'2014-10-03 11:28:54','',21),(20,4,2,23,1,'2014-10-03 11:28:58','',21),(21,4,2,22,1,'2014-10-03 11:29:00','',21),(22,4,2,24,1,'2014-10-03 11:29:03','',21),(23,54,0,22,0,'2014-10-03 11:32:48','',26),(24,54,0,22,0,'2014-10-03 11:32:53','',27),(25,4,2,26,1,'2014-10-03 11:33:59','',22),(26,4,2,27,1,'2014-10-03 11:34:06','',22),(27,4,1,23,1,'2014-10-04 02:21:56','',21),(28,54,1,22,0,'2014-10-06 04:48:20','',22),(29,54,0,22,0,'2014-10-06 05:19:25','',28),(30,4,2,28,1,'2014-10-06 05:19:46','',22),(31,54,0,21,0,'2014-10-07 06:04:09','',29),(32,4,1,24,0,'2014-10-07 08:15:32','',24),(33,54,1,22,0,'2014-10-07 08:22:41','',22),(34,4,0,25,0,'2014-10-14 02:32:11','',30),(35,41,2,30,1,'2014-10-14 02:34:00','',25),(36,41,2,30,1,'2014-10-14 02:36:43','',25),(37,4,0,25,0,'2014-10-14 02:37:57','',31),(38,54,2,31,1,'2014-10-14 02:39:23','',25),(39,54,2,31,1,'2014-10-14 02:44:59','',25),(40,54,0,22,0,'2014-10-14 02:45:41','',32),(41,4,0,19,0,'2014-10-14 02:46:25','',33),(42,4,0,20,0,'2014-10-14 02:52:45','',34),(43,41,2,34,1,'2014-10-14 02:53:32','',20),(44,4,2,28,1,'2014-10-14 06:38:11','',22),(45,41,2,32,1,'2014-10-14 06:38:20','',22),(46,54,3,31,2,'2014-10-23 01:08:22','',31),(47,4,3,32,2,'2014-10-23 01:14:11','',32),(48,54,3,33,2,'2014-10-23 06:04:36','',33),(49,4,3,35,2,'2014-10-23 10:22:53','',35),(50,64,3,36,2,'2014-10-23 11:17:23','',36);
 /*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -210,6 +214,7 @@ CREATE TABLE `question` (
   `content` longtext,
   `tags` text,
   `timestamp` datetime NOT NULL,
+  `status` char(1) NOT NULL DEFAULT 'O',
   PRIMARY KEY (`question_id`),
   KEY `author` (`author`),
   CONSTRAINT `question_ibfk_1` FOREIGN KEY (`author`) REFERENCES `user` (`UserID`)
@@ -222,7 +227,7 @@ CREATE TABLE `question` (
 
 LOCK TABLES `question` WRITE;
 /*!40000 ALTER TABLE `question` DISABLE KEYS */;
-INSERT INTO `question` VALUES (19,4,'Testing this site','1, 2, 3, 4... Testing...','test, php, jquery','2014-10-03 10:01:07'),(20,4,'More testing','More testing. Need more tags.','jquery, php, java, web','2014-10-03 10:03:41'),(21,54,'Notifications','Notifications for new answers don\'t work','questions, answers, web','2014-10-03 10:09:42'),(22,54,'Answer notifications','It seems to have worked','questions, answers, web, php, jquery','2014-10-03 11:32:01'),(23,4,'Adding questions','How do you ask a question on this site?','questions, answers, web','2014-10-04 02:05:12'),(24,4,'A new question.','I\'ve just added a new question.\nI should check if questions over 255 characters get truncated when later displayed.\nI believe that 255 characters are really too long. I wonder how many have I already typed.','questions, answers, web','2014-10-07 05:56:39'),(25,4,'Testing the reputation functions','I wonder if this will work...','questions, answers, php','2014-10-14 02:31:12');
+INSERT INTO `question` VALUES (19,4,'Testing this site','1, 2, 3, 4... Testing...','test, php, jquery','2014-10-03 10:01:07','O'),(20,4,'More testing','More testing. Need more tags.','jquery, php, java, web','2014-10-03 10:03:41','O'),(21,54,'Notifications','Notifications for new answers don\'t work','questions, answers, web','2014-10-03 10:09:42','O'),(22,54,'Answer notifications','It seems to have worked','questions, answers, web, php, jquery','2014-10-03 11:32:01','O'),(23,4,'Adding questions','How do you ask a question on this site?','questions, answers, web','2014-10-04 02:05:12','O'),(24,4,'A new question.','I\'ve just added a new question.\nI should check if questions over 255 characters get truncated when later displayed.\nI believe that 255 characters are really too long. I wonder how many have I already typed.','questions, answers, web','2014-10-07 05:56:39','O'),(25,4,'Testing the reputation functions','I wonder if this will work...','questions, answers, php','2014-10-14 02:31:12','O');
 /*!40000 ALTER TABLE `question` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -270,7 +275,7 @@ CREATE TABLE `user` (
   `moderated` bit(1) NOT NULL DEFAULT b'1',
   `pwdChange` bit(1) DEFAULT b'0',
   PRIMARY KEY (`UserID`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -279,7 +284,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (4,'gskoropada@gmail.com','gskoropada',9,2,'abcde','$2y$10$VnKFUp8KpFViocdhAjoO4eci21n60SzE0HheAZjGxKA9xQ9NBVl6i','','\0','\0'),(41,'user1@email.com','User 1',5,0,'f4c6703674540','$2y$10$ba.9LVnaEd2Sv2KrSD330.5Ns9W7FBwB0Y6WvF8oyD8MY42WwsFdy','\0','','\0'),(43,'user3@email.com','User 3',0,0,'5d41746f2e9f0','$2y$10$be3DO40Dt9AFTCMg7ZBWDOzKGo46UHOHkM8WPEzYGF6kcX8rfl5eG','','','\0'),(44,'user4@email.com','User 4',0,0,'74afe5b9290b2','$2y$10$cj4QMSXIy.gZGx9letFNwOo60P8cbqz7gw5SeznlOKBh9eD0aIP2O','\0','','\0'),(47,'user7@email.com','User 7',0,0,'65443fdedb209','$2y$10$g2WHT6dgCudQ3jYkmOPimeqY8cSqQivehvgklw.wy9LK4RIR1CH0e','\0','','\0'),(48,'user8@email.com','User 8',0,0,'0257c54ba8e90','$2y$10$rPeAFaBC9X0MszgzJxO3luKJ6tQdoppkgcecqtD/DW0YrLzWIqCx2','\0','','\0'),(49,'user9@email.com','User 9',0,0,'9ef0f42619d05','$2y$10$LumWKf16RriG2MBjHXBxBecfP011RUYIv28rq0Z450.43ndWtId4u','\0','','\0'),(50,'user10@email.com','User 10',0,0,'6c01542a1e207','$2y$10$hT4XUxWr8IwMD13d8vN41eGui2wRVa5rBzQydWMgb6RH/kqo545ey','\0','','\0'),(51,'user11@email.com','User 11',0,0,'09a2a5e229405','$2y$10$HPg1FhjPAfK.XzpkM/jomO2m.Ax3ly0Xi1gTT9rgHvejR41vlwNbS','\0','','\0'),(52,'user12@email.com','User 12',0,0,'ea0025b202433','$2y$10$3GOpBNguAyRIWVZzOVgR0Oq6g/t2Uxkkje9Ae8n9kRUFCJ9.i4f0G','\0','','\0'),(53,'user13@email.com','User 13',0,0,'43a04f85382ea','$2y$10$8sA/uA7iZQ1bJEG519G2eOHx//U00.nn1YQ/f67rpD6pe8Lyp98Ky','\0','','\0'),(54,'sarah@email.com','Sarah',4,1,'a3a2a4e0de475','$2y$10$1jtI.LKVGNwuMnfuHTD40OgQZ5pbaDezoFZv83xQssfVwBWlAofre','','\0','\0');
+INSERT INTO `user` VALUES (4,'gskoropada@gmail.com','gskoropada',10,2,'abcde','$2y$10$VnKFUp8KpFViocdhAjoO4eci21n60SzE0HheAZjGxKA9xQ9NBVl6i','','\0','\0'),(41,'user1@email.com','User 1',4,0,'f4c6703674540','$2y$10$ba.9LVnaEd2Sv2KrSD330.5Ns9W7FBwB0Y6WvF8oyD8MY42WwsFdy','','','\0'),(43,'user3@email.com','User 3',0,0,'5d41746f2e9f0','$2y$10$be3DO40Dt9AFTCMg7ZBWDOzKGo46UHOHkM8WPEzYGF6kcX8rfl5eG','\0','','\0'),(44,'user4@email.com','User 4',0,0,'74afe5b9290b2','$2y$10$cj4QMSXIy.gZGx9letFNwOo60P8cbqz7gw5SeznlOKBh9eD0aIP2O','\0','','\0'),(47,'user7@email.com','User 7',0,0,'65443fdedb209','$2y$10$g2WHT6dgCudQ3jYkmOPimeqY8cSqQivehvgklw.wy9LK4RIR1CH0e','\0','','\0'),(48,'user8@email.com','User 8',0,0,'0257c54ba8e90','$2y$10$rPeAFaBC9X0MszgzJxO3luKJ6tQdoppkgcecqtD/DW0YrLzWIqCx2','\0','','\0'),(49,'user9@email.com','User 9',0,0,'9ef0f42619d05','$2y$10$LumWKf16RriG2MBjHXBxBecfP011RUYIv28rq0Z450.43ndWtId4u','\0','','\0'),(50,'user10@email.com','User 10',0,0,'6c01542a1e207','$2y$10$hT4XUxWr8IwMD13d8vN41eGui2wRVa5rBzQydWMgb6RH/kqo545ey','\0','','\0'),(51,'user11@email.com','User 11',0,0,'09a2a5e229405','$2y$10$HPg1FhjPAfK.XzpkM/jomO2m.Ax3ly0Xi1gTT9rgHvejR41vlwNbS','\0','','\0'),(52,'user12@email.com','User 12',0,0,'ea0025b202433','$2y$10$3GOpBNguAyRIWVZzOVgR0Oq6g/t2Uxkkje9Ae8n9kRUFCJ9.i4f0G','\0','','\0'),(53,'user13@email.com','User 13',0,0,'43a04f85382ea','$2y$10$8sA/uA7iZQ1bJEG519G2eOHx//U00.nn1YQ/f67rpD6pe8Lyp98Ky','\0','','\0'),(54,'sarah@email.com','Sarah',4,1,'a3a2a4e0de475','$2y$10$1jtI.LKVGNwuMnfuHTD40OgQZ5pbaDezoFZv83xQssfVwBWlAofre','','\0','\0'),(56,'email@email.com','GenericUser',0,0,'545534450081d','$2y$10$Yxu2omcXGaipiumxzLVOw.WcbnUgu7Hr8nZ2tfitoShuta964HnVK','\0','','\0'),(58,'admin@scioxchange.com','Scio Exchange Admin',0,2,'3ce44536a7859','$2y$10$mNjfe6kpZwyQGU8yehbcQeglGYcyhdJ6r5wsw.6E9Ha65qAD.U48W','','','\0'),(59,'test@email.com','testuser',0,0,'4bb5d6b9449e8','$2y$10$U5a/kiFnm4m6wsyBOyDwketXus9vCR1ieK.IOOapXoGXmHmpTTRb2','\0','','\0'),(60,'test1@email.com','Test User 1',0,0,'6c7416e6cb845','$2y$10$rUJIemOcklE/rm1WJ.6bBOpec7j2UlWtXjRA6DL3326X5iwgGPGUu','\0','','\0'),(61,'test2@email.com','Test User 2',0,0,'cf4e942b504d8','$2y$10$EbZJ/w/yF/3c1FoPxtA17.sG/JYoT//sNKEMmS/M0UP5juDl0nZBy','\0','','\0'),(62,'test3@email.com','Test User 3',0,0,'3e5493b29d484','$2y$10$iS7FuBnFgf3ZXKtcuKk3LOfPUdjOfnGSlgHI69N1cxkSOGpz6lmrS','\0','','\0'),(63,'test4@email.com','Test User 4',0,0,'846a5984f97c5','$2y$10$sHrqShGGjftbOP39WRCt6O9vbRXvTs2KO.hVbmYtsW9DVn7WLqefW','\0','','\0'),(64,'test5@email.com','Test User 5',0,0,'4b2c41e84a75c','$2y$10$GgI3hZRWNzXE9tmUlK3p6uCYySAOEGpikaX6zqcmBbwyOHYsyGIaS','\0','','\0');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -333,7 +338,7 @@ CREATE TABLE `validation_key` (
 
 LOCK TABLES `validation_key` WRITE;
 /*!40000 ALTER TABLE `validation_key` DISABLE KEYS */;
-INSERT INTO `validation_key` VALUES (44,'54029abbc312a0.54468005','2014-08-31 05:47:07'),(47,'54029d6fe457b0.07579498','2014-08-31 05:58:39'),(48,'54029ecbee9008.01226131','2014-08-31 06:04:27'),(49,'54029fde440677.39749854','2014-08-31 06:09:02'),(50,'5402a012415fa5.70212078','2014-08-31 06:09:54'),(51,'5402a0a954a2d1.07633349','2014-08-31 06:12:25'),(52,'5402a20375e8f8.69374223','2014-08-31 06:18:11'),(53,'5402a33b2c2550.96194890','2014-08-31 06:23:23');
+INSERT INTO `validation_key` VALUES (44,'54029abbc312a0.54468005','2014-08-31 05:47:07'),(47,'54029d6fe457b0.07579498','2014-08-31 05:58:39'),(48,'54029ecbee9008.01226131','2014-08-31 06:04:27'),(49,'54029fde440677.39749854','2014-08-31 06:09:02'),(50,'5402a012415fa5.70212078','2014-08-31 06:09:54'),(51,'5402a0a954a2d1.07633349','2014-08-31 06:12:25'),(52,'5402a20375e8f8.69374223','2014-08-31 06:18:11'),(53,'5402a33b2c2550.96194890','2014-08-31 06:23:23'),(56,'544850360691e3.16201504','2014-10-23 02:47:50'),(59,'5448b96c18c4d9.67778400','2014-10-23 10:16:44'),(60,'5448bc76810526.48305244','2014-10-23 10:29:42'),(61,'5448bd4eb51a13.33403374','2014-10-23 10:33:18'),(62,'5448bd92b30488.05568650','2014-10-23 10:34:26'),(63,'5448c756cd4ad8.65187974','2014-10-23 11:16:06'),(64,'5448c7a20f94f0.24011255','2014-10-23 11:17:22');
 /*!40000 ALTER TABLE `validation_key` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -361,7 +366,7 @@ CREATE TABLE `vote_tracking` (
 
 LOCK TABLES `vote_tracking` WRITE;
 /*!40000 ALTER TABLE `vote_tracking` DISABLE KEYS */;
-INSERT INTO `vote_tracking` VALUES (4,21,'2014-10-03 10:04:42'),(4,28,'2014-10-06 05:19:46'),(4,30,'2014-10-14 02:34:00'),(4,31,'2014-10-14 02:39:23'),(4,34,'2014-10-14 02:53:32'),(41,31,'2014-10-14 02:44:59'),(54,22,'2014-10-03 11:29:00'),(54,23,'2014-10-03 11:28:57'),(54,24,'2014-10-03 11:29:02'),(54,25,'2014-10-03 11:28:54'),(54,26,'2014-10-03 11:33:58'),(54,27,'2014-10-03 11:34:05'),(54,30,'2014-10-14 02:36:43');
+INSERT INTO `vote_tracking` VALUES (4,21,'2014-10-03 10:04:42'),(4,28,'2014-10-06 05:19:46'),(4,30,'2014-10-14 02:34:00'),(4,31,'2014-10-14 02:39:23'),(4,34,'2014-10-14 02:53:32'),(41,31,'2014-10-14 02:44:59'),(54,22,'2014-10-03 11:29:00'),(54,23,'2014-10-03 11:28:57'),(54,24,'2014-10-03 11:29:02'),(54,25,'2014-10-03 11:28:54'),(54,26,'2014-10-03 11:33:58'),(54,27,'2014-10-03 11:34:05'),(54,28,'2014-10-14 06:38:11'),(54,30,'2014-10-14 02:36:43'),(54,32,'2014-10-14 06:38:20');
 /*!40000 ALTER TABLE `vote_tracking` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -374,4 +379,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-10-14 12:00:42
+-- Dump completed on 2014-10-23 20:21:52

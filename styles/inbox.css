@@ -97,3 +97,8 @@
 	border-bottom: 2px solid #666;
 	font-style: italic;
 }
+
+#msg_list_header {
+	border-bottom: 1px dotted #888;
+	min-height: 30px;
+}

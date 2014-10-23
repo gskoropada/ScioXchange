@@ -1,16 +1,50 @@
 $(function(){
-	
-	updateMsgList();
-	
-});
-
-function updateMsgList() {
+	var c;
+	if($(".sent_msgs").length > 0) {
+		c = "mcs";
+		updateMsgList("fls");
+	} else {
+		c = "mc";
+		updateMsgList("fl");
+	}
 	
 	$.ajax({
 		type: 'POST',
 		url: 'inbox_functions.php',
 		data: {
-			action: 'fl'
+			action: 'mcu'
+		},
+		success: function(data) {
+			if(parseInt(data)!= 0){
+				$("#unread_msg_count").text("("+data+")");
+			}
+		}
+	});
+	
+	
+	
+	$.ajax({
+		type: 'POST',
+		url: 'inbox_functions.php',
+		data: {
+			action: c
+		},
+		success: function(data) {
+			if(parseInt(data)!= 0){
+				$("#total_msg_count").text(data);
+			}
+		}
+	});
+	
+});
+
+function updateMsgList(action) {
+	
+	$.ajax({
+		type: 'POST',
+		url: 'inbox_functions.php',
+		data: {
+			action: action
 		},
 		success: function(data) {
 			var list = JSON.parse(data);
@@ -48,6 +82,12 @@ function updateMsgList() {
 				
 				i++;
 			}
+		
+			if($(".goto").length>0) {
+				var goto_id = $(".goto").attr('name').trim();
+				showMessage(goto_id);
+			}
+			
 		}
 	});
 }
@@ -56,7 +96,7 @@ function showMessage(id) {
 	
 	$(".msg_highlight").removeClass("msg_highlight");
 	$("#"+id).addClass("msg_highlight");
-	
+
 	$.ajax({
 		type: 'POST',
 		url: 'inbox_functions.php',
@@ -66,9 +106,14 @@ function showMessage(id) {
 		},
 		success: function(data) {
 			var msg = JSON.parse(data);
+			if($(".sent_msgs").length>0){
+				to_from = "To: "+msg.r_screenName;
+			} else {
+				to_from = "From: "+msg.screenName;
+			}
 			$("#inbox_preview").html("<div id='msg_header'></div>");
 			$("#msg_header").append("<span class='msg_subject'>"+msg.subject+"</span>");
-			$("#msg_header").append("<span class='msg_from'>From: "+msg.screenName+"</span><span class='msg_date'>Sent on: "+msg.timestamp+"</span>");
+			$("#msg_header").append("<span class='msg_from'>"+to_from+"</span><span class='msg_date'>Sent on: "+msg.timestamp+"</span>");
 			$("#inbox_preview").append("<pre class='msg_content'>"+msg.content+"</pre>");
 		}
 	});
